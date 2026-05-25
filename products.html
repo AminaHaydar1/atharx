@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Athar Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0813;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(29, 78, 216, 0.15) 0%, transparent 40%);
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(15, 12, 28, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+        }
+
+        /* --- STYLISH NAVBAR VECTOR CART ICON --- */
+        .cart-trigger {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid #a855f7;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cart-trigger:hover {
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        /* Pure Vector Shopping Cart Container */
+        .cart-icon-container {
+            position: relative;
+            width: 22px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-basket-mesh {
+            width: 18px;
+            height: 12px;
+            border: 2px solid #ffffff;
+            border-top: none;
+            border-radius: 0 0 4px 3px;
+            position: relative;
+            top: -2px;
+            left: 2px;
+        }
+
+        .cart-basket-mesh::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: -4px;
+            width: 6px;
+            height: 5px;
+            border: 2px solid #ffffff;
+            border-bottom: none;
+            border-left: none;
+            border-radius: 0 2px 0 0;
+            transform: skewX(-10deg);
+        }
+
+        .cart-icon-wheel {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+        .wheel-left { left: 5px; }
+        .wheel-right { right: 1px; }
+
+        .cart-count {
+            background: #ffffff;
+            color: #0b0813;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #ffffff;
+        }
+
+        /* Main Catalog Layout */
+        .catalog-container {
+            max-width: 1300px;
+            margin: 50px auto;
+            padding: 0 4%;
+        }
+
+        .catalog-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .catalog-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .catalog-header p {
+            color: #3b82f6;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Filter Menus */
+        .filter-menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            background: rgba(15, 12, 28, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 10px 24px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover { border-color: rgba(59, 130, 246, 0.5); color: #fff; }
+
+        .filter-btn.active {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: #a855f7;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Product Showcase Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(15, 12, 28, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-card.purple-accent { border-color: rgba(168, 85, 247, 0.2); }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            background: rgba(20, 16, 38, 0.8);
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .product-card.purple-accent:hover {
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .product-img-box {
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(circle, rgba(29, 21, 54, 0.6) 0%, rgba(11, 8, 19, 0.8) 100%);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .product-info h3 {
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-info p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .tag-pill {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #3b82f6;
+        }
+        .product-card.purple-accent .tag-pill { color: #a855f7; }
+
+        .add-cart-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .product-card.purple-accent .add-cart-btn { border-color: rgba(168, 85, 247, 0.6); }
+
+        .product-card:hover .add-cart-btn {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+        }
+        .product-card.purple-accent:hover .add-cart-btn {
+            background: #a855f7;
+            border-color: #a855f7;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+        }
+
+        /* --- SIDEBAR DRAWER PANEL --- */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 420px;
+            height: 100vh;
+            background: rgba(10, 7, 18, 0.96);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-side-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .cart-side-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .close-cart {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .close-cart:hover { color: #fff; background: rgba(239, 68, 68, 0.3); border-color: #ef4444; }
+
+        .cart-items-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        .cart-item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .cart-item-thumb {
+            width: 50px;
+            height: 50px;
+            background: #0f0c1c;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart-item-details { flex-grow: 1; }
+
+        .cart-item-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-qty-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #3b82f6;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 4px;
+        }
+
+        .remove-item-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+        .remove-item-btn:hover { color: #ef4444; }
+
+        .cart-summary-block {
+            background: rgba(15, 12, 28, 0.8);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .summary-row.total-line {
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .cart-checkout-btn {
+            background: linear-gradient(to right, #a855f7, #3b82f6);
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .empty-cart-msg {
+            color: #475569;
+            text-align: center;
+            margin-top: 80px;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            background: #06040a;
+            padding: 40px 8%;
+            text-align: center;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
+        </div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="index.html#preview">Live Mockup</a></li>
+                <li><a href="index.html#process">Our Process</a></li>
+            </ul>
+            <div class="cart-trigger" onclick="toggleCart(true)">
+                <div class="cart-icon-container">
+                    <div class="cart-basket-mesh"></div>
+                    <div class="cart-icon-wheel wheel-left"></div>
+                    <div class="cart-icon-wheel wheel-right"></div>
+                </div>
+                <span class="cart-count" id="cartCountGlobal">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="catalog-container">
+        <div class="catalog-header">
+            <p>Athar Studio Blueprint Store</p>
+            <h1>Product Catalog</h1>
+        </div>
+
+        <div class="filter-menu">
+            <button class="filter-btn active" onclick="filterItems('all')">All Studios</button>
+            <button class="filter-btn" onclick="filterItems('stationery')">Stationery</button>
+            <button class="filter-btn" onclick="filterItems('electronics')">Electronics</button>
+            <button class="filter-btn" onclick="filterItems('toys')">Toys & Hobbies</button>
+            <button class="filter-btn" onclick="filterItems('gifts')">Luxury Gifts</button>
+            <button class="filter-btn" onclick="filterItems('customization')">Custom Lab</button>
+        </div>
+
+        <div class="products-grid" id="catalogGrid">
+            
+            <div class="product-card blue-accent" data-category="stationery">
+                <div class="product-img-box" id="thumb-journal">
+                    <div style="width: 24px; height: 32px; border: 2.5px solid #3b82f6; border-radius: 4px; box-shadow: 0 0 12px #3b82f6; position: relative; background: rgba(59, 130, 246, 0.1);">
+                        <div style="position: absolute; left: 4px; top: 6px; width: 12px; height: 2px; background: rgba(59, 130, 246, 0.4);"></div>
+                        <div style="position: absolute; left: 4px; top: 12px; width: 12px; height: 2px; background: rgba(59, 130, 246, 0.4);"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Laser Engraved Journal</h3>
+                    <p>Premium dark leather-bound hardcover notebooks lined for clean drafting.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Stationery</span>
+                    <button class="add-cart-btn" onclick="addToCart('Laser Engraved Journal', 'journal')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card purple-accent" data-category="electronics">
+                <div class="product-img-box" id="thumb-powerbank">
+                    <div style="width: 36px; height: 22px; border: 2.5px solid #a855f7; border-radius: 6px; box-shadow: 0 0 12px #a855f7; position: relative; background: rgba(168, 85, 247, 0.1);">
+                        <div style="position: absolute; right: -5px; top: 6px; width: 3px; height: 6px; background: #a855f7; border-radius: 0 2px 2px 0;"></div>
+                        <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%; position: absolute; left: 6px; top: 6px; box-shadow: 0 0 6px #22c55e;"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Stealth Power Bank</h3>
+                    <p>10,000mAh structural charging bricks etched clean with your business branding logo.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Electronics</span>
+                    <button class="add-cart-btn" onclick="addToCart('Stealth Power Bank', 'powerbank')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card blue-accent" data-category="toys">
+                <div class="product-img-box" id="thumb-puzzle">
+                    <div style="width: 28px; height: 28px; border: 2.5px solid #3b82f6; border-radius: 4px; box-shadow: 0 0 12px #3b82f6; transform: rotate(15deg); position: relative; background: rgba(59, 130, 246, 0.1);">
+                        <div style="position: absolute; left: 11px; top: 0; width: 2px; height: 24px; background: #3b82f6;"></div>
+                        <div style="position: absolute; left: 0; top: 11px; width: 24px; height: 2px; background: #3b82f6;"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Acrylic Block Puzzle</h3>
+                    <p>Precision inter-locking vector cut desktop puzzle tiles configured from scratch.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Toys</span>
+                    <button class="add-cart-btn" onclick="addToCart('Acrylic Block Puzzle', 'puzzle')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card purple-accent" data-category="gifts">
+                <div class="product-img-box" id="thumb-hamper">
+                    <div style="width: 32px; height: 32px; border: 2.5px solid #a855f7; border-radius: 6px; box-shadow: 0 0 12px #a855f7; position: relative; background: rgba(168, 85, 247, 0.1);">
+                        <div style="position: absolute; left: 0; top: 13px; width: 28px; height: 2px; background: #a855f7;"></div>
+                        <div style="position: absolute; left: 13px; top: 0; width: 2px; height: 28px; background: #a855f7;"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Executive VIP Hamper</h3>
+                    <p>A beautifully curated matte finish box packed with customized premium desk layout gears.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Gifts</span>
+                    <button class="add-cart-btn" onclick="addToCart('Executive VIP Hamper', 'hamper')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card blue-accent" data-category="customization">
+                <div class="product-img-box" id="thumb-keychain">
+                    <div style="position: relative; width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center;">
+                        <div style="width: 12px; height: 12px; border: 2px solid #3b82f6; border-radius: 50%; margin-bottom: 2px;"></div>
+                        <div style="width: 16px; height: 24px; border: 2.5px solid #3b82f6; border-radius: 3px; background: rgba(59, 130, 246, 0.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Plexi Glow Keychain</h3>
+                    <p>Vertical crystal clear cast acrylic blocks featuring bright color filled vector edge cuts.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Custom Lab</span>
+                    <button class="add-cart-btn" onclick="addToCart('Plexi Glow Keychain', 'keychain')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card purple-accent" data-category="customization">
+                <div class="product-img-box" id="thumb-pins">
+                    <div style="width: 30px; height: 30px; border: 2.5px solid #a855f7; border-radius: 50%; box-shadow: 0 0 12px #a855f7; position: relative; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%); flex-shrink: 0;">
+                        <div style="position: absolute; left: 7px; top: 7px; width: 12px; height: 12px; border: 1.5px dashed #a855f7; border-radius: 50%;"></div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Enamel Badge Pins</h3>
+                    <p>Circular structural lapel badges minted clean in micro metal details.</p>
+                </div>
+                <div class="product-footer">
+                    <span class="tag-pill">Custom Lab</span>
+                    <button class="add-cart-btn" onclick="addToCart('Enamel Badge Pins', 'pins')">Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebarPanel">
+        <div class="cart-side-header">
+            <h2>
+                <div class="cart-icon-container" style="transform: scale(1.2);"><div class="cart-basket-mesh" style="border-color:#a855f7"></div><div class="cart-icon-wheel wheel-left" style="background:#a855f7"></div><div class="cart-icon-wheel wheel-right" style="background:#a855f7"></div></div>
+                <span style="margin-left: 10px;">Your Storage Cart</span>
+            </h2>
+            <button class="close-cart" onclick="toggleCart(false)">×</button>
+        </div>
+
+        <div class="cart-items-wrapper" id="cartDrawerList">
+            <div class="empty-cart-msg">Your cart rack is empty.</div>
+        </div>
+
+        <div class="cart-summary-block">
+            <div class="summary-row">
+                <span>Selected Lines</span>
+                <span id="summaryItemsCount">0 types</span>
+            </div>
+            <div class="summary-row">
+                <span>Cargo Shipping</span>
+                <span style="color:#22c55e; font-weight:600;">FREE STUDIO DELIVERY</span>
+            </div>
+            <div class="summary-row total-line">
+                <span>Total Assets</span>
+                <span id="summaryTotalQty" style="text-shadow:0 0 10px rgba(168,85,247,0.5);">0 units</span>
+            </div>
+        </div>
+
+        <button class="cart-checkout-btn" onclick="alert('Order matrix compiled successfully! Routing checkout transmission...')">Proceed to Order</button>
+    </div>
+
+    <footer>
+        <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.6; margin-bottom: 10px;">
+        <p style="font-size: 12px; color: #64748b;">© 2026 ATHAR Studio. Beyond Your Best Idea. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let shoppingCart = [];
+
+        function toggleCart(openState) {
+            const panel = document.getElementById('cartSidebarPanel');
+            if (openState) panel.classList.add('open');
+            else panel.classList.remove('open');
+        }
+
+        function addToCart(itemName, iconRef) {
+            const existingItem = shoppingCart.find(i => i.name === itemName);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                shoppingCart.push({ name: itemName, type: iconRef, qty: 1 });
+            }
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function updateCartUI() {
+            const totalUnits = shoppingCart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCountGlobal').innerText = totalUnits;
+            document.getElementById('summaryTotalQty').innerText = totalUnits + ' units';
+            document.getElementById('summaryItemsCount').innerText = shoppingCart.length + ' unique design(s)';
+
+            const listContainer = document.getElementById('cartDrawerList');
+            if(shoppingCart.length === 0) {
+                listContainer.innerHTML = '<div class="empty-cart-msg">Your cart rack is empty.</div>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            shoppingCart.forEach(item => {
+                let graphicSVG = document.getElementById('thumb-' + item.type).innerHTML;
+
+                listContainer.innerHTML += `
+                    <div class="cart-item-card">
+                        <div class="cart-item-thumb" style="transform: scale(0.8);">
+                            ${graphicSVG}
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-qty-badge">QTY: ${item.qty}</div>
+                        </div>
+                        <button class="remove-item-btn" onclick="removeItem('${item.name}')">Remove</button>
+                    </div>
+                `;
+            });
+        }
+
+        function removeItem(itemName) {
+            shoppingCart = shoppingCart.filter(item => item.name !== itemName);
+            updateCartUI();
+        }
+
+        function filterItems(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

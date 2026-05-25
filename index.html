@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athar | Custom Keychains, Mugs & Pins</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0813;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.18) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(29, 78, 216, 0.18) 0%, transparent 40%);
+        }
+
+        /* Neon Header Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(15, 12, 28, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Section Layout Containers */
+        section {
+            padding: 80px 8% 40px 8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Section Typography Rules matching user input */
+        .section-subtitle {
+            color: #3b82f6;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hero Showcase Section */
+        .hero {
+            padding-top: 80px;
+        }
+
+        .main-card {
+            background: rgba(20, 16, 38, 0.6);
+            backdrop-filter: blur(15px);
+            border: 2px solid #a855f7;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.35), inset 0 0 15px rgba(168, 85, 247, 0.15);
+            border-radius: 20px;
+            padding: 55px 40px;
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 60px;
+        }
+
+        .main-card h1 {
+            font-size: 72px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            margin-top: -35px;
+        }
+
+        .main-card p {
+            color: #a855f7;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+        margin-bottom: -15px;
+        }
+
+        /* Grid Layout Framework */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(15, 12, 28, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 15px;
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:nth-child(even) {
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            background: rgba(20, 16, 38, 0.85);
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.45);
+        }
+
+        .glass-card:nth-child(even):hover {
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.45);
+        }
+
+        .icon-box {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        .glass-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Small Text Styling rules */
+        .glass-card p {
+            color: #94a3b8;
+            font-size: 13.5px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            margin-top: 15px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover .cta-btn {
+            background: #ffffff;
+            color: #0b0813;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* NEW SECTION: Interactive Customizer Playground Box */
+        .preview-container {
+            background: rgba(20, 16, 38, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            text-align: left;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        .preview-controls {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #a855f7;
+        }
+
+        .input-group input, .input-group select {
+            background: rgba(11, 8, 19, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+       
+
+        /* NEW SECTION: Footer/Contact Info Contact Area */
+        footer {
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            background: #06040a;
+            padding: 40px 8%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .footer-text-small {
+            font-size: 12px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        .neon-link {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .neon-link:hover {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168,85,247,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="image/athar logo-09.png " alt="Athar Logo" class="logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="#preview">Live Mockup</a></li>
+            <li><a href="#process">Our Process</a></li>
+        </ul>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="main-card">
+            <h1>ATHAR LB</h1>
+            <p>Beyond Your Best Idea</p>
+        </div>
+    </section>
+
+    
+    <section id="products">
+        <div class="section-subtitle">Best Sellers</div>
+        <div class="section-title">Explore Customizable Gifts</div>
+        
+        <div class="grid-layout">
+            <div class="glass-card">
+                <div class="icon-box" style="width: 55px; height: 65px; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; position: relative; margin: 0 auto 15px auto;">
+    <div style="width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); position: relative; z-index: 2; background: #0b0813;"></div>
+    
+    <div style="width: 4px; height: 8px; background: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); margin-top: -3px; margin-bottom: -2px; position: relative; z-index: 1;"></div>
+    
+    <div style="width: 28px; height: 42px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 3px; box-shadow: 0 0 18px rgba(59, 130, 246, 0.7), inset 0 0 8px rgba(59, 130, 246, 0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; position: relative;">
+        <div style="width: 4px; height: 4px; border-radius: 50%; border: 1px solid #3b82f6; position: absolute; top: 3px;"></div>
+        
+        <div style="width: 14px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.8; margin-top: 6px;"></div>
+        <div style="width: 10px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.5;"></div>
+    </div>
+</div>
+                <h3>Custom Keychains</h3>
+                <p>Twice the memories in one sleek accessory. Made from plexiglass (acrylic), these keychains feature dual-sided printing so you can showcase two different images or view your favorite photo from any angle.</p>
+                <button class="cta-btn">Configure Asset</button>
+            </div>
+
+            <div class="glass-card">
+             <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
+    
+    <div style="width: 52px; height: 52px; border: 2.5px solid #a855f7; border-radius: 50%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.3); background: rgba(20, 16, 38, 0.5); position: relative;">
+        
+        <div style="width: 20px; height: 24px; background: rgba(168, 85, 247, 0.2); border: 2px solid #a855f7; border-radius: 12px 12px 6px 6px; position: absolute; top: 10px; z-index: 2; box-shadow: inset 0 0 5px rgba(168, 85, 247, 0.4);">
+            <div style="width: 10px; height: 4px; background: #a855f7; border-radius: 4px; position: absolute; top: -1px; left: 3px;"></div>
+        </div>
+        
+        <div style="width: 38px; height: 16px; background: rgba(168, 85, 247, 0.15); border: 2px solid #a855f7; border-radius: 8px 8px 0 0; position: absolute; bottom: -1px; z-index: 1;">
+            <div style="width: 12px; height: 6px; border: 1px solid rgba(168, 85, 247, 0.5); border-top: none; border-radius: 0 0 6px 6px; margin: 0 auto;"></div>
+        </div>
+
+        <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; position: absolute; top: 16px; left: 22px; z-index: 3; opacity: 0.8; box-shadow: 0 0 5px #ffffff;"></div>
+    </div>
+</div>
+                <h3>Custom illustrated Prints</h3>
+                <p>Turn your favorite memories into timeless art. Simply upload your photo, and we will transform it into a beautifully styled custom illustration. Printed and laminated, it makes the perfect personalized gift for anniversaries, birthdays, or a stylish addition to your own home decor.</p>
+                <button class="cta-btn">Configure Asset</button>
+            </div>
+
+            <div class="glass-card">
+                <div class="icon-box" style="width: 55px; height: 55px; border-radius: 50%; border: 3px solid #a855f7; display: flex; justify-content: center; align-items: center; position: relative; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.4); margin: 0 auto 15px auto;">
+    <div style="width: 37px; height: 37px; border-radius: 50%; border: 1px dashed rgba(168, 85, 247, 0.6); display: flex; justify-content: center; align-items: center;">
+        <div style="width: 6px; height: 6px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px #ffffff;"></div>
+    </div>
+    <div style="position: absolute; width: 2px; height: 28px; background: rgba(168, 85, 247, 0.5); transform: rotate(45deg); bottom: -8px; right: 12px; z-index: -1;"></div>
+</div>
+                <h3>Custom Photo Pins</h3>
+                <p>Carry your favorite moments wherever you go. Our custom photo pins feature vibrant, high-definition color printing protected by a sleek, glossy finish. Perfect for pinning onto bags, jackets, or straps to keep your best memories on display.</p>
+                <button class="cta-btn">Configure Asset</button>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="process">
+        <div class="section-subtitle">Workflow Strategy</div>
+        <div class="section-title">How Creation Works</div>
+
+        <div class="grid-layout">
+            <div class="glass-card">
+                <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
+    <div style="width: 12px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2px solid #3b82f6; border-bottom: none; border-radius: 2px 2px 0 0; transform: rotate(45deg); position: relative; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 6px rgba(59, 130, 246, 0.3); top: -4px; left: -4px;">
+        <div style="width: 2px; height: 100%; background: rgba(59, 130, 246, 0.5); margin: 0 auto;"></div>
+    </div>
+    
+    <div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 10px solid #3b82f6; transform: rotate(45deg); position: absolute; bottom: 12px; left: 12px; filter: drop-shadow(0 0 8px #3b82f6);">
+        <div style="width: 3px; height: 3px; background: #ffffff; border-radius: 50%; position: absolute; top: -11px; left: -1.5px; box-shadow: 0 0 5px #ffffff;"></div>
+    </div>
+
+    <div style="position: absolute; width: 15px; height: 2px; background: linear-gradient(to right, #ffffff, transparent); transform: rotate(-45deg); bottom: 10px; left: 6px; box-shadow: 0 0 8px #ffffff; opacity: 0.8;"></div>
+</div>
+                <h3>1. Send Concept</h3>
+                <p>Upload your images, text, or logos directly through our custom submission pipeline portals.</p>
+            </div>
+            <div class="glass-card">
+                <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
+    
+    <div style="width: 44px; height: 44px; border: 2px dashed rgba(168, 85, 247, 0.5); border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 12px rgba(168, 85, 247, 0.2); position: relative;">
+        
+        <div style="width: 22px; height: 22px; background: rgba(168, 85, 247, 0.2); border: 2.5px solid #a855f7; border-radius: 4px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.7), inset 0 0 6px rgba(168, 85, 247, 0.4); display: flex; justify-content: center; align-items: center;">
+            <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 6px #ffffff;"></div>
+        </div>
+
+        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; top: -1px; left: -1px;"></div>
+        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; top: -1px; left: -1px;"></div>
+        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; bottom: -1px; right: -1px;"></div>
+        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; bottom: -1px; right: -1px;"></div>
+    </div>
+</div>
+                <h3>2. Preparining Your Order</h3>
+                <p>Editing and Preparing your images to your custom order.</p>
+            </div>
+            <div class="glass-card">
+                <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
+    
+    <div style="width: 32px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 4px; position: relative; box-shadow: 0 0 18px rgba(59, 130, 246, 0.6), inset 0 0 8px rgba(59, 130, 246, 0.3); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+        
+        <div style="width: 6px; height: 100%; background: #3b82f6; box-shadow: 0 0 6px rgba(59, 130, 246, 0.5); opacity: 0.8; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 2px; height: 8px; background: #ffffff; opacity: 0.6;"></div>
+        </div>
+        
+        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; left: -1px;"></div>
+        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; right: -1px;"></div>
+    </div>
+
+    <div style="position: absolute; width: 12px; height: 2px; background: linear-gradient(to left, #ffffff, transparent); bottom: 10px; left: 2px; opacity: 0.6; transform: rotate(-15deg); box-shadow: 0 0 4px #ffffff;"></div>
+</div>
+                <h3>3. Secure Delivery</h3>
+                <p>Your finished pieces are carefully packaged, and shipped directly to your door.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.7;">
+        <p class="footer-text-small">© 2026 ATHAR LB. Beyond Your Best Idea. All rights reserved.</p>
+        <p class="footer-text-small">Need custom support? Connect via <a href="#" class="neon-link">atharx.lb1@gmail.com</a></p>
+    </footer>
+
+    <script>
+        const input = document.getElementById('mockupInput');
+        const colorSelect = document.getElementById('colorSelect');
+        const previewText = document.getElementById('previewText');
+
+        function updatePreview() {
+            previewText.textContent = input.value || "ATHAR";
+            const selectedColor = colorSelect.value;
+            previewText.style.color = '#ffffff';
+            previewText.style.textShadow = `0 0 10px ${selectedColor}, 0 0 20px ${selectedColor}, 0 0 30px ${selectedColor}`;
+        }
+
+        input.addEventListener('input', updatePreview);
+        colorSelect.addEventListener('change', updatePreview);
+        updatePreview(); // Init glow array
+    </script>
+</body>
+</html>
