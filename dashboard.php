@@ -1,450 +1,322 @@
 <?php
-// dashboard.php
 session_start();
 
-// Simulated tracking session verification loop
-if (!isset($_SESSION['user_name'])) {
-    $_SESSION['user_name'] = "Creative Artisan"; 
-}
-
-// Handle dynamic workspace sign-out routing logic
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    session_destroy();
-    header("Location: index.html");
+// Access Control Gatekeeper - Ensure customer session is verified
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: login.html");
     exit();
 }
 
-// 1. Base array configuration to hold historical sample orders
-$ordersHistory = [
-    [
-        'order_ref' => 'ATH-8C3D2F1E',
-        'date' => '2026-05-24',
-        'total_price' => 44.00,
-        'payment_method' => 'cod',
-        'status' => 'In Queue',
-        'items' => [
-            [
-                'name' => 'Custom Wooden Engraving Block',
-                'price' => 40.00,
-                'specs' => 'Size: A5 | Material: Premium Walnut Wood',
-                'quantity' => 1,
-                'image_path' => 'image/blueprint-sample.jpg' 
-            ]
-        ],
-        'review_comment' => "Please ensure the font sizing on line 2 matches the reference vector alignment carefully."
-    ]
-];
+$user_id = $_SESSION['user_id'] ?? 1;
 
-// 2. DETAILED ORDER CAPTURE: Processes data sent from checkout.php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['is_new_order_submission'])) {
-    
-    // Clean, unescape, and extract the payload securely
-    $rawPayload = isset($_POST['raw_cart_payload']) ? $_POST['raw_cart_payload'] : '';
-    
-    if (empty($rawPayload) && isset($_POST['custom_specs'])) {
-        $rawPayload = $_POST['custom_specs'];
+// --- DATABASE CONFIGURATION SETUP ---
+$db_host = "localhost";
+$db_user = "root";
+$db_pass = "";
+$db_name = "athar_db";
+
+try {
+    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
+} catch (PDOException $e) { 
+    die("Database Connection Error: " . $e->getMessage()); 
+}
+
+// DYNAMIC SCHEMA DETECTION: Find out exactly what your general_reviews text column is named
+$reviews_text_column = 'comment'; 
+try {
+    $reviewColumns = $pdo->query("DESCRIBE general_reviews")->fetchAll(PDO::FETCH_COLUMN);
+    if (in_array('review_comment', $reviewColumns)) {
+        $reviews_text_column = 'review_comment';
+    } elseif (in_array('comment', $reviewColumns)) {
+        $reviews_text_column = 'comment';
+    } elseif (in_array('message', $reviewColumns)) {
+        $reviews_text_column = 'message';
+    } elseif (in_array('review', $reviewColumns)) {
+        $reviews_text_column = 'review';
     }
+} catch (Exception $schemaException) {
+    // Structural safety fallback
+}
 
-    $parsedItems = [];
-    if (!empty($rawPayload)) {
-        // Unescape standard HTML Special Characters out before translating JSON parameters 
-        $sanitizedJson = htmlspecialchars_decode($rawPayload, ENT_QUOTES);
-        $parsedItems = json_decode($sanitizedJson, true);
-    }
+// --- HANDLE INDEPENDENT GENERAL REVIEW FORM SUBMISSION ---
+$message_status = "";
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_general_review'])) {
+    $order_id = intval($_POST['selected_order_id']);
+    $review_text = trim($_POST['general_review_text']);
     
-    if (!empty($parsedItems)) {
-        $newItemsFormatted = [];
-        foreach ($parsedItems as $item) {
-            
-            // Extract image path cleanly across possible variant names ('image_path', 'image', or 'img')
-            $extractedImagePath = '';
-            if (!empty($item['image_path'])) {
-                $extractedImagePath = $item['image_path'];
-            } elseif (!empty($item['image'])) {
-                $extractedImagePath = $item['image'];
-            } elseif (!empty($item['img'])) {
-                $extractedImagePath = $item['img'];
-            }
-
-            $newItemsFormatted[] = [
-                'name' => $item['name'] ?? 'Custom Tailored Blueprint Asset',
-                'price' => floatval($item['price'] ?? 0),
-                'specs' => $item['specs'] ?? 'Standard Specifications Parameter Vector',
-                'quantity' => intval($item['quantity'] ?? 1),
-                'image_path' => trim($extractedImagePath) 
-            ];
-        }
+    if ($order_id > 0 && !empty($review_text)) {
+        $reviewSql = "INSERT INTO general_reviews (user_id, order_id, {$reviews_text_column}) 
+                      VALUES (:uid, :oid, :comment)
+                      ON DUPLICATE KEY UPDATE {$reviews_text_column} = :comment_update";
         
-        // Prepend the order structure straight to the rendering profile stack
-        array_unshift($ordersHistory, [
-            'order_ref' => 'ATH-' . strtoupper(substr(md5(time()), 0, 8)),
-            'date' => date('Y-m-d'),
-            'total_price' => floatval($_POST['order_total'] ?? 0),
-            'payment_method' => $_POST['selected_payment_method'] ?? 'cod',
-            'status' => 'Processing Node',
-            'items' => $newItemsFormatted,
-            'review_comment' => ''
+        $pdo->prepare($reviewSql)->execute([
+            ':uid'            => $user_id,
+            ':oid'            => $order_id,
+            ':comment'        => $review_text,
+            ':comment_update' => $review_text
         ]);
+        $message_status = "Review saved successfully inside general_reviews database!";
+    } else {
+        $message_status = "Please select an order reference and write a comment before saving.";
     }
 }
 
-// Simple adjustment comments handler logic loop
-$feedbackSuccessNotice = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_review'])) {
-    $targetRef = $_POST['target_order_ref'];
-    $newComment = $_POST['user_review_comment'];
-    $feedbackSuccessNotice = true;
+// Fetch user profile information
+$user_display_name = "Valued Customer";
+try {
+    $userStmt = $pdo->prepare("SELECT full_name FROM users WHERE id = :uid LIMIT 1");
+    $userStmt->execute([':uid' => $user_id]);
+    $userRow = $userStmt->fetch();
+    if ($userRow && !empty($userRow['full_name'])) {
+        $user_display_name = $userRow['full_name'];
+    }
+} catch (Exception $e) {
+    $user_display_name = $_SESSION['username'] ?? "Valued Customer";
 }
+
+// Fetch user orders records
+$stmt = $pdo->prepare("SELECT * FROM user_orders WHERE user_id = :uid ORDER BY id DESC");
+$stmt->execute([':uid' => $user_id]);
+$orders = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artisan Workspace Dashboard | Athar Studio</title>
+    <title>Customer Dashboard Workspace | Athar Studio</title>
     <style>
-        :root {
-            --text-main: #f1f5f9;      
-            --text-muted: #94a3b8;     
-            --bg-base: #0f172a;        
-            --bg-card: #1e293b;        
-            --bg-input: #334155;       
-            --border: #334155;         
-            --purple-accent: #7c3aed;  
-            --success: #10b981;
+        body { 
+            background-color: #0b0813; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 40px; 
+            background-image: radial-gradient(circle at 50% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 60%);
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
+        
+        .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo-container .logo-img {
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--purple-accent);
-        }
-
-        .logout-btn {
-            background: #ef4444;
-            color: #fff !important;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            font-weight: 600;
-        }
-
-        .workspace-container {
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .welcome-hero {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .welcome-hero h1 {
-            margin: 0 0 5px 0;
-            font-size: 2rem;
-        }
-
-        .order-history-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        .order-meta-summary-bar {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
             padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-
-        .meta-segment-node .label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 4px;
+        .welcome-msg h2 { 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin: 0;
+            background: linear-gradient(to right, #fff, #c084fc); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
-
-        .meta-segment-node .value {
-            font-weight: 700;
-        }
-
-        .payment-method-badge {
-            background: var(--bg-input);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-        }
-
-        .item-row-box {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            background: var(--bg-base);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-        }
-
-        /* High-Contrast Responsive Dynamic Thumbnail Image Component */
-        .thumbnail-wrapper {
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
-        }
-
-        .item-thumbnail-preview {
-            width: 100%;
-            height: 100%;
+        .welcome-msg p { color: #94a3b8; margin: 5px 0 0 0; font-size: 14px; }
+        
+        .home-nav-btn {
+            background: rgba(255, 255, 255, 0.03);
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 10px 22px;
             border-radius: 8px;
-            object-fit: cover;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            display: block;
-        }
-
-        .item-details-block {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .item-name-heading {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .item-specs-subtext {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-        }
-
-        .item-pricing-matrix-node {
-            text-align: right;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .modification-review-box {
-            margin-top: 20px;
-            background: #1e1b4b;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #312e81;
-        }
-
-        .review-textarea {
-            width: 100%;
-            background: var(--bg-base);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text-main);
-            font-family: inherit;
-            resize: vertical;
-            box-sizing: border-box;
-            margin-bottom: 12px;
-        }
-
-        .save-feedback-btn {
-            background: var(--purple-accent);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
             font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .home-nav-btn:hover {
+            background: #a855f7;
+            color: #fff;
+            border-color: #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+            transform: translateY(-1px);
         }
 
-        .alert-toast-success {
-            background: var(--success);
-            color: white;
-            padding: 15px;
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(15,12,28,0.6); backdrop-filter: blur(8px); border-radius: 12px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.1); margin-bottom: 40px; }
+        th, td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: center; font-size: 14px; vertical-align: middle; }
+        th { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(168, 85, 247, 0.3); }
+        tr:hover { background-color: rgba(255,255,255,0.02); }
+        
+        .payment-badge { padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; text-transform: uppercase; display: inline-block; letter-spacing: 0.5px; }
+        .badge-card { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .badge-offline { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        
+        /* IMAGE GRID IN STABLE LAYOUT MATRIX */
+        .thumb-matrix { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 140px; margin: 0 auto; }
+        .img-preview-thumb { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(168, 85, 247, 0.4); background: #120e24; display: block; }
+        
+        .review-section-card {
+            max-width: 600px;
+            margin: 40px 0;
+            background: rgba(15, 12, 28, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+        }
+        .review-section-card h3 { margin-top: 0; margin-bottom: 15px; font-size: 18px; color: #c084fc; font-weight: 700; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; text-align: left; }
+        .form-group label { font-size: 13px; color: #94a3b8; font-weight: 600; }
+        .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background: #120e24;
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 8px;
-            margin-bottom: 25px;
+            color: white;
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .form-select:focus, .form-textarea:focus { border-color: #a855f7; outline: none; }
+        .form-textarea { resize: vertical; }
+        .submit-review-btn {
+            background: linear-gradient(to right, #a855f7, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .submit-review-btn:hover { opacity: 0.95; }
+        .status-alert {
+            padding: 10px 14px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            margin-top: 60px;
-        }
+        .no-orders-wrapper { text-align: center; color: #94a3b8; padding: 60px; font-size: 15px; border: 1px dashed rgba(255,255,255,0.08); border-radius: 12px; background: rgba(15,12,28,0.3); }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-container">
-        <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
-    </div>
-    <div class="nav-container">
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="customize.php">Custom Lab</a></li>
-            <li><a href="dashboard.php" class="active">Dashboard</a></li>
-            <li><a href="dashboard.php?action=logout" class="logout-btn">Log Out</a></li>
-        </ul>
-    </div>
-</header>
-
-<div class="workspace-container">
-    
-    <div class="welcome-hero">
-        <div>
-            <h1>Welcome Back, <?= htmlspecialchars($_SESSION['user_name']) ?></h1>
-            <p>Monitor historical configuration telemetry vectors and order modifications from this console.</p>
+    <div class="dashboard-header">
+        <div class="welcome-msg">
+            <h2>Welcome back, <?php echo htmlspecialchars($user_display_name); ?>!</h2>
+            <p>Monitor layout metrics, track pipelines, and manage your service experience records.</p>
         </div>
-        <div style="font-size: 2.5rem;">🛠️</div>
+        <a href="index.html" class="home-nav-btn">← Back to Store Home</a>
     </div>
 
-    <?php if ($feedbackSuccessNotice): ?>
-        <div class="alert-toast-success">
-            ✓ Production alteration requests log successfully updated for engineering validation checks.
-        </div>
+    <?php if (!empty($message_status)): ?>
+        <div class="status-alert"><?php echo htmlspecialchars($message_status); ?></div>
     <?php endif; ?>
 
-    <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 20px;">
-        <span>Active & Historic Queue Specifications</span>
-    </div>
-
-    <?php foreach ($ordersHistory as $order): ?>
-        <div class="order-history-card">
-            
-            <div class="order-meta-summary-bar">
-                <div class="meta-segment-node">
-                    <div class="label">Reference Hash</div>
-                    <div class="value" style="font-family: monospace; color: var(--purple-accent);"><?= $order['order_ref'] ?></div>
-                </div>
-                <div class="meta-segment-node">
-                    <div class="label">Placement Date</div>
-                    <div class="value"><?= $order['date'] ?></div>
-                </div>
-                <div class="meta-segment-node">
-                    <div class="label">Settle Channel</div>
-                    <div class="value">
-                        <span class="payment-method-badge"><?= $order['payment_method'] === 'cod' ? 'Cash (COD)' : ($order['payment_method'] === 'wish' ? 'Wish Money' : 'Card Node') ?></span>
-                    </div>
-                </div>
-                <div class="meta-segment-node">
-                    <div class="label">Queue Status</div>
-                    <div class="value" style="color: #f59e0b;"><?= $order['status'] ?></div>
-                </div>
-                <div class="meta-segment-node" style="text-align: right;">
-                    <div class="label">Total Ledger Cost</div>
-                    <div class="value" style="color: var(--text-main); font-size: 1.15rem;">$<?= number_format($order['total_price'], 2) ?></div>
-                </div>
-            </div>
-
-            <div class="order-items-substack">
-                <?php foreach ($order['items'] as $item): ?>
-                    <div class="item-row-box">
+    <?php if (empty($orders)): ?>
+        <div class="no-orders-wrapper">You haven't submitted any custom asset configurations to your operation rack yet.</div>
+    <?php else: ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tracking Reference</th>
+                    <th>Product Details</th>
+                    <th>Design Asset Previews</th>
+                    <th>Product Layout Specs</th>
+                    <th>Saved Database Comment Note</th>
+                    <th>Billing Channel</th>
+                    <th>Amount Paid</th>
+                    <th>Fulfillment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($orders as $order): ?>
+                    <tr>
+                        <td><strong style="color: #3b82f6; font-family: monospace; font-size: 14px;"><?php echo htmlspecialchars($order['card_transaction_id']); ?></strong></td>
                         
-                        <?php if (!empty($item['image_path']) && strlen(trim($item['image_path'])) > 3): ?>
-                            <div class="thumbnail-wrapper">
-                                <img src="<?= $item['image_path'] ?>" 
-                                     class="item-thumbnail-preview" 
-                                     alt="User Uploaded Specification Vector"
-                                     onerror="this.parentNode.style.display='none';">
-                            </div>
-                        <?php endif; ?>
+                        <td><strong><?php echo htmlspecialchars($order['product_name']); ?></strong></td>
+                        
+                        <td>
+                            <?php if (!empty($order['design_images'])): 
+                                $image_list = explode(',', $order['design_images']); ?>
+                                <div class="thumb-matrix">
+                                    <?php foreach ($image_list as $img_path): 
+                                        $clean_path = trim($img_path);
+                                        if (!empty($clean_path)): ?>
+                                            <img src="<?php echo htmlspecialchars($clean_path); ?>" class="img-preview-thumb" alt="Upload Preview">
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <span style="color: #475569; font-style: italic; font-size: 12px;">No Files</span>
+                            <?php endif; ?>
+                        </td>
 
-                        <div class="item-details-block">
-                            <div class="item-name-heading"><?= htmlspecialchars($item['name']) ?></div>
-                            <div class="item-specs-subtext"><?= htmlspecialchars($item['specs']) ?></div>
-                            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Quantity: <?= intval($item['quantity']) ?></div>
-                        </div>
+                        <td style="text-align: left; max-width: 180px; font-size: 13px; color: #cbd5e1; line-height: 1.4;">
+                            <?php echo !empty($order['specifications']) ? nl2br(htmlspecialchars(trim($order['specifications']))) : '<span style="color:#475569; font-style:italic;">Standard specs.</span>'; ?>
+                        </td>
 
-                        <div class="item-pricing-matrix-node">
-                            $<?= number_format($item['price'] * $item['quantity'], 2) ?>
-                        </div>
-                    </div>
+                        <td style="text-align: left; max-width: 200px; font-size: 13px; color: #a7f3d0;">
+                            <?php 
+                            $reviewStmt = $pdo->prepare("SELECT {$reviews_text_column} FROM general_reviews WHERE user_id = :uid AND order_id = :oid LIMIT 1");
+                            $reviewStmt->execute([':uid' => $user_id, ':oid' => $order['id']]);
+                            $saved_comment = $reviewStmt->fetchColumn();
+                            
+                            if ($saved_comment) {
+                                echo htmlspecialchars($saved_comment);
+                            } else {
+                                echo '<span style="color: #475569; font-style: italic;">No comment logged yet. Use form below.</span>';
+                            }
+                            ?>
+                        </td>
+
+                        <td>
+                            <?php 
+                            $raw_method = strtoupper(trim($order['cardholder_name']));
+                            if ($raw_method === 'CARD' || strpos($raw_method, 'CARD') !== false): ?>
+                                <span class="payment-badge badge-card">💳 CREDIT CARD</span>
+                            <?php else: ?>
+                                <span class="payment-badge badge-offline">💵 <?php echo htmlspecialchars($order['cardholder_name']); ?></span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td style="color:#22c55e; font-weight:800; font-size: 15px;">$<?php echo number_format($order['total_price'], 2); ?></td>
+                        
+                        <td><span style="color:#c084fc; font-weight:700; text-transform: uppercase; font-size:12px;"><?php echo htmlspecialchars($order['order_status']); ?></span></td>
+                    </tr>
                 <?php endforeach; ?>
-            </div>
+            </tbody>
+        </table>
 
-            <div class="modification-review-box">
-                <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: #c084fc;">
-                    <span>📝 Request Production Alterations / Review Feedback</span>
+        <div class="review-section-card">
+            <h3>Add or Update Order Review Notes</h3>
+            <form action="dashboard.php" method="POST">
+                <div class="form-group">
+                    <label for="selected_order_id">Choose Order Tracking Reference</label>
+                    <select name="selected_order_id" id="selected_order_id" class="form-select" required>
+                        <option value="">-- Select an Order Reference --</option>
+                        <?php foreach ($orders as $order): ?>
+                            <option value="<?php echo $order['id']; ?>">
+                                <?php echo htmlspecialchars($order['card_transaction_id']) . " (" . htmlspecialchars($order['product_name']) . ")"; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
-                    Need changes made to structural scaling, layout dimensions, or custom design properties? Write your adjustments below for our warehouse review engineers.
-                </p>
                 
-                <form action="dashboard.php" method="POST">
-                    <input type="hidden" name="action_update_review" value="1">
-                    <input type="hidden" name="target_order_ref" value="<?= $order['order_ref'] ?>">
-                    
-                    <textarea 
-                        name="user_review_comment" 
-                        class="review-textarea" 
-                        rows="3" 
-                        placeholder="Specify any blueprint or design parameter variations required..."
-                    ><?= htmlspecialchars($order['review_comment'] ?? '') ?></textarea>
-                    
-                    <button type="submit" class="save-feedback-btn">Log Adjustment Requests</button>
-                </form>
-            </div>
-
+                <div class="form-group">
+                    <label for="general_review_text">Your Comment / Review Message</label>
+                    <textarea name="general_review_text" id="general_review_text" class="form-textarea" rows="4" required placeholder="Type your experience details or small adjustment notes here... This will save directly into the general_reviews database."></textarea>
+                </div>
+                
+                <div style="text-align: right;">
+                    <button type="submit" name="submit_general_review" class="submit-review-btn">Save Comment Note</button>
+                </div>
+            </form>
         </div>
-    <?php endforeach; ?>
-
-</div>
-
-<footer>
-    <p>&copy; <?= date('Y') ?> Athar Studio. All Rights Reserved.</p>
-</footer>
+    <?php endif; ?>
 
 </body>
 </html>
