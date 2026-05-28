@@ -21,7 +21,7 @@
                               radial-gradient(circle at 90% 80%, rgba(29, 78, 216, 0.18) 0%, transparent 40%);
         }
 
-        /* Neon Header Navbar */
+        /* --- NEON HEADER & NAVBAR --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -29,10 +29,12 @@
             padding: 15px 8%;
             background: rgba(15, 12, 28, 0.75);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(168, 85, 247, 0.25);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: padding 0.3s ease;
         }
 
         .logo-container {
@@ -49,6 +51,11 @@
 
         .logo-img:hover {
             transform: scale(1.05);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links {
@@ -71,16 +78,36 @@
             text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
         }
 
-        /* Section Layout Containers */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 5px;
+            z-index: 1010;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* --- SECTION LAYOUT CONTAINERS --- */
         section {
             padding: 80px 8% 40px 8%;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            transition: padding 0.3s ease;
         }
 
-        /* Section Typography Rules matching user input */
         .section-subtitle {
             color: #3b82f6;
             font-size: 16px;
@@ -101,54 +128,58 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Hero Showcase Section */
+        /* --- HERO ZONE --- */
         .hero {
             padding-top: 80px;
+            width: 100%;
         }
 
         .main-card {
             background: rgba(20, 16, 38, 0.6);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 2px solid #a855f7;
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.35), inset 0 0 15px rgba(168, 85, 247, 0.15);
             border-radius: 20px;
             padding: 55px 40px;
             max-width: 850px;
             width: 100%;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
         }
 
         .main-card h1 {
-            font-size: 72px;
+            font-size: clamp(38px, 8vw, 72px);
             font-weight: 800;
             letter-spacing: 2px;
             margin-bottom: 5px;
-            margin-top: -35px;
+            margin-top: 0;
+            line-height: 1.1;
         }
 
         .main-card p {
             color: #a855f7;
-            font-size: 13px;
+            font-size: clamp(11px, 2vw, 13px);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 5px;
             text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
-        margin-bottom: -15px;
+            margin-bottom: 0;
+            margin-top: 15px;
         }
 
-        /* Grid Layout Framework */
+        /* --- FLEXIBLE RESPONSIVE GRID --- */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             width: 100%;
             max-width: 1200px;
         }
 
-        /* Glassmorphism Card Style */
         .glass-card {
             background: rgba(15, 12, 28, 0.5);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 15px;
             padding: 40px 25px;
@@ -180,6 +211,7 @@
         .icon-box {
             font-size: 40px;
             margin-bottom: 5px;
+            flex-shrink: 0;
         }
 
         .glass-card h3 {
@@ -188,7 +220,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Small Text Styling rules */
         .glass-card p {
             color: #94a3b8;
             font-size: 13.5px;
@@ -197,7 +228,7 @@
         }
 
         .cta-btn {
-            margin-top: 15px;
+            margin-top: auto;
             background: transparent;
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -217,62 +248,146 @@
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
         }
 
-        /* NEW SECTION: Interactive Customizer Playground Box */
-        .preview-container {
-            background: rgba(20, 16, 38, 0.4);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 900px;
+        /* --- ATHAR DIAGRAM SYSTEM (SCALING PRESERVATION) --- */
+        .diagram-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 80px auto;
+            overflow: visible;
+        }
+
+        /* Scaling outer shell wrapper preserves layout ratio perfectly */
+        .diagram-scaler-wrapper {
             width: 100%;
             display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
+            justify-content: center;
             align-items: center;
-            text-align: left;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+            overflow: visible;
         }
 
-        .preview-controls {
-            flex: 1;
-            min-width: 280px;
+        .matrix-container {
+            position: relative;
+            width: 1150px;
+            height: 640px;
+            flex-shrink: 0;
+            transform-origin: center center;
+        }
+
+        .circuit-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Center Hub Node Styling */
+        .hub-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 150px;
+            z-index: 5;
+            background: linear-gradient(135deg, rgba(20, 16, 38, 0.95) 0%, rgba(11, 8, 19, 0.98) 100%);
+            border: 2px solid #a855f7;
+            border-radius: 20px;
+            padding: 2px;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .hub-inner {
+            width: 100%;
+            height: 100%;
+            background: #0b0813;
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
         }
 
-        .input-group {
+        .hub-inner h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            background: linear-gradient(to right, #ffffff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hub-inner p {
+            color: #3b82f6;
+            font-size: 11px;
+            margin-top: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hub-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 20px;
+            box-shadow: 0 0 40px #a855f7;
+            opacity: 0.15;
+            z-index: -1;
+            animation: hubPulseGlow 4s infinite alternate;
+        }
+
+        /* Matrix Floating Nodes */
+        .matrix-node {
+            position: absolute;
+            width: 280px;
+            padding: 22px;
+            background: rgba(15, 12, 28, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            align-items: flex-start;
+            text-align: left;
+            z-index: 10;
+            transition: all 0.3s ease;
         }
 
-        .input-group label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #a855f7;
+        .matrix-node:hover {
+            transform: translateY(-5px);
+            background: rgba(20, 16, 38, 0.95);
         }
 
-        .input-group input, .input-group select {
-            background: rgba(11, 8, 19, 0.8);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: 8px;
-            padding: 12px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-            transition: border 0.3s ease;
-        }
+        .blue-glow-border { border: 1px solid rgba(59, 130, 246, 0.4); }
+        .blue-glow-border:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
 
-        .input-group input:focus {
-            border-color: #a855f7;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
-        }
+        .purple-glow-border { border: 1px solid rgba(168, 85, 247, 0.4); }
+        .purple-glow-border:hover { border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
 
-       
+        .matrix-node h4 { font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; }
+        .matrix-node p { color: #94a3b8; font-size: 12.5px; line-height: 1.5; text-align: left; }
 
-        /* NEW SECTION: Footer/Contact Info Contact Area */
+        /* Absolute Blueprint Anchor Points */
+        .node-tl { top: 40px; left: 20px; }
+        .node-tm { top: 10px; left: 50%; transform: translateX(-50%); }
+        .node-tm:hover { transform: translate(-50%, -5px); }
+        .node-tr { top: 40px; right: 20px; }
+
+        .node-bl { bottom: 40px; left: 20px; }
+        .node-bm { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        .node-bm:hover { transform: translate(-50%, 5px); }
+        .node-br { bottom: 40px; right: 20px; }
+
+        /* --- FOOTER REGION --- */
         footer {
             border-top: 1px solid rgba(168, 85, 247, 0.2);
             background: #06040a;
@@ -288,6 +403,7 @@
             font-size: 12px;
             color: #64748b;
             letter-spacing: 0.5px;
+            line-height: 1.4;
         }
 
         .neon-link {
@@ -299,20 +415,191 @@
             color: #a855f7;
             text-shadow: 0 0 8px rgba(168,85,247,0.5);
         }
+
+        @keyframes hubPulseGlow {
+            0% { transform: scale(0.98); opacity: 0.1; }
+            100% { transform: scale(1.02); opacity: 0.3; }
+        }
+
+        /* --- RESPONSIVE LAYOUT MEDIA QUERIES --- */
+        @media (max-width: 1200px) {
+            /* Smooth scaling calculation to adjust layout dynamically on viewports down to mobile sizes */
+            .matrix-container {
+                transform: scale(0.85);
+            }
+            .diagram-scaler-wrapper {
+                height: 550px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            header { padding: 15px 5%; }
+            section { padding: 60px 5% 30px 5%; }
+            .section-title { font-size: 30px; margin-bottom: 30px; }
+            .matrix-container {
+                transform: scale(0.65);
+            }
+            .diagram-scaler-wrapper {
+                height: 430px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 86px;
+                right: -100%;
+                width: 260px;
+                height: auto;
+                max-height: calc(100vh - 86px);
+                background: rgba(15, 12, 28, 0.96);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                border-left: 1px solid rgba(168, 85, 247, 0.25);
+                border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+                border-bottom-left-radius: 16px;
+                flex-direction: column;
+                padding: 40px 30px;
+                gap: 25px;
+                text-align: left;
+                align-items: flex-start;
+                transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5);
+            }
+            .nav-links.active { right: 0; }
+            .menu-toggle.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .menu-toggle.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+            .main-card { padding: 40px 20px; }
+            
+            .matrix-container {
+                transform: scale(0.5);
+            }
+            .diagram-scaler-wrapper {
+                height: 340px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .matrix-container {
+                transform: scale(0.4);
+            }
+            .diagram-scaler-wrapper {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 12px 4%; }
+            .logo-img { height: 45px; }
+            .nav-links { top: 70px; width: 100%; border-left: none; border-bottom-left-radius: 0; }
+            section { padding: 50px 4% 20px 4%; }
+            .section-subtitle { font-size: 13px; letter-spacing: 2px; }
+            .section-title { font-size: 24px; }
+            .grid-layout { grid-template-columns: 1fr; gap: 20px; }
+            .glass-card { padding: 30px 20px; }
+            
+            .matrix-container {
+                transform: scale(0.32);
+            }
+            .diagram-scaler-wrapper {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .matrix-container {
+                transform: scale(0.27);
+            }
+            .diagram-scaler-wrapper {
+                height: 195px;
+            }
+        }
+        /* --- BUTTON AND WRAPPER CONFIGURATIONS --- */
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Creates spacing between components */
+}
+
+.desktop-login-btn {
+    display: inline-block;
+    padding: 8px 22px;
+    border: 1px solid #a855f7;
+    border-radius: 6px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: rgba(168, 85, 247, 0.05);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+    transition: all 0.3s ease;
+    order: 2; /* Keeps it to the right side on desktop layout */
+}
+
+.desktop-login-btn:hover {
+    background: #a855f7;
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+    transform: translateY(-1px);
+}
+
+.mobile-only-login {
+    display: none;
+    width: 100%;
+}
+
+/* --- MOBILE BREAKPOINT ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    .desktop-login-btn {
+        display: none; /* Invisibility filter for desktop variant on handhelds */
+    }
+
+    .mobile-only-login {
+        display: block; /* Reveals item inside the menu drawer layout */
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .login-btn-mobile {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+        background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+        border-radius: 8px;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+    }
+}
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <img src="image/athar logo-09.png " alt="Athar Logo" class="logo-img">
+            <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="#preview">Live Mockup</a></li>
-            <li><a href="#process">Our Process</a></li>
-        </ul>
+     <div class="nav-wrapper">
+    <a href="signup.html" class="desktop-login-btn">Login / Sign Up</a>
+
+    <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <ul class="nav-links" id="navLinksList">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="customize.php">Customization</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="mobile-only-login"><a href="signup.html" class="login-btn-mobile">Login / Sign Up</a></li>
+    </ul>
+</div>
     </header>
 
     <section id="home" class="hero">
@@ -322,7 +609,6 @@
         </div>
     </section>
 
-    
     <section id="products">
         <div class="section-subtitle">Best Sellers</div>
         <div class="section-title">Explore Customizable Gifts</div>
@@ -330,50 +616,43 @@
         <div class="grid-layout">
             <div class="glass-card">
                 <div class="icon-box" style="width: 55px; height: 65px; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; position: relative; margin: 0 auto 15px auto;">
-    <div style="width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); position: relative; z-index: 2; background: #0b0813;"></div>
-    
-    <div style="width: 4px; height: 8px; background: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); margin-top: -3px; margin-bottom: -2px; position: relative; z-index: 1;"></div>
-    
-    <div style="width: 28px; height: 42px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 3px; box-shadow: 0 0 18px rgba(59, 130, 246, 0.7), inset 0 0 8px rgba(59, 130, 246, 0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; position: relative;">
-        <div style="width: 4px; height: 4px; border-radius: 50%; border: 1px solid #3b82f6; position: absolute; top: 3px;"></div>
-        
-        <div style="width: 14px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.8; margin-top: 6px;"></div>
-        <div style="width: 10px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.5;"></div>
-    </div>
-</div>
+                    <div style="width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); position: relative; z-index: 2; background: #0b0813;"></div>
+                    <div style="width: 4px; height: 8px; background: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); margin-top: -3px; margin-bottom: -2px; position: relative; z-index: 1;"></div>
+                    <div style="width: 28px; height: 42px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 3px; box-shadow: 0 0 18px rgba(59, 130, 246, 0.7), inset 0 0 8px rgba(59, 130, 246, 0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; position: relative;">
+                        <div style="width: 4px; height: 4px; border-radius: 50%; border: 1px solid #3b82f6; position: absolute; top: 3px;"></div>
+                        <div style="width: 14px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.8; margin-top: 6px;"></div>
+                        <div style="width: 10px; height: 2px; background: #ffffff; border-radius: 1px; box-shadow: 0 0 5px #ffffff; opacity: 0.5;"></div>
+                    </div>
+                </div>
                 <h3>Custom Keychains</h3>
                 <p>Twice the memories in one sleek accessory. Made from plexiglass (acrylic), these keychains feature dual-sided printing so you can showcase two different images or view your favorite photo from any angle.</p>
                 <button class="cta-btn">Configure Asset</button>
             </div>
 
             <div class="glass-card">
-             <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
-    
-    <div style="width: 52px; height: 52px; border: 2.5px solid #a855f7; border-radius: 50%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.3); background: rgba(20, 16, 38, 0.5); position: relative;">
-        
-        <div style="width: 20px; height: 24px; background: rgba(168, 85, 247, 0.2); border: 2px solid #a855f7; border-radius: 12px 12px 6px 6px; position: absolute; top: 10px; z-index: 2; box-shadow: inset 0 0 5px rgba(168, 85, 247, 0.4);">
-            <div style="width: 10px; height: 4px; background: #a855f7; border-radius: 4px; position: absolute; top: -1px; left: 3px;"></div>
-        </div>
-        
-        <div style="width: 38px; height: 16px; background: rgba(168, 85, 247, 0.15); border: 2px solid #a855f7; border-radius: 8px 8px 0 0; position: absolute; bottom: -1px; z-index: 1;">
-            <div style="width: 12px; height: 6px; border: 1px solid rgba(168, 85, 247, 0.5); border-top: none; border-radius: 0 0 6px 6px; margin: 0 auto;"></div>
-        </div>
-
-        <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; position: absolute; top: 16px; left: 22px; z-index: 3; opacity: 0.8; box-shadow: 0 0 5px #ffffff;"></div>
-    </div>
-</div>
-                <h3>Custom illustrated Prints</h3>
-                <p>Turn your favorite memories into timeless art. Simply upload your photo, and we will transform it into a beautifully styled custom illustration. Printed and laminated, it makes the perfect personalized gift for anniversaries, birthdays, or a stylish addition to your own home decor.</p>
+                <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
+                    <div style="width: 52px; height: 52px; border: 2.5px solid #a855f7; border-radius: 50%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.3); background: rgba(20, 16, 38, 0.5); position: relative;">
+                        <div style="width: 20px; height: 24px; background: rgba(168, 85, 247, 0.2); border: 2px solid #a855f7; border-radius: 12px 12px 6px 6px; position: absolute; top: 10px; z-index: 2; box-shadow: inset 0 0 5px rgba(168, 85, 247, 0.4);">
+                            <div style="width: 10px; height: 4px; background: #a855f7; border-radius: 4px; position: absolute; top: -1px; left: 3px;"></div>
+                        </div>
+                        <div style="width: 38px; height: 16px; background: rgba(168, 85, 247, 0.15); border: 2px solid #a855f7; border-radius: 8px 8px 0 0; position: absolute; bottom: -1px; z-index: 1;">
+                            <div style="width: 12px; height: 6px; border: 1px solid rgba(168, 85, 247, 0.5); border-top: none; border-radius: 0 0 6px 6px; margin: 0 auto;"></div>
+                        </div>
+                        <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; position: absolute; top: 16px; left: 22px; z-index: 3; opacity: 0.8; box-shadow: 0 0 5px #ffffff;"></div>
+                    </div>
+                </div>
+                <h3>Custom Illustrated Prints</h3>
+                <p>Turn your favorite memories into timeless art. Simply upload your photo, and we will transform it into a beautifully styled custom illustration. Printed and laminated, it makes the perfect personalized gift for anniversaries or a stylish addition to your decor.</p>
                 <button class="cta-btn">Configure Asset</button>
             </div>
 
             <div class="glass-card">
                 <div class="icon-box" style="width: 55px; height: 55px; border-radius: 50%; border: 3px solid #a855f7; display: flex; justify-content: center; align-items: center; position: relative; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.4); margin: 0 auto 15px auto;">
-    <div style="width: 37px; height: 37px; border-radius: 50%; border: 1px dashed rgba(168, 85, 247, 0.6); display: flex; justify-content: center; align-items: center;">
-        <div style="width: 6px; height: 6px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px #ffffff;"></div>
-    </div>
-    <div style="position: absolute; width: 2px; height: 28px; background: rgba(168, 85, 247, 0.5); transform: rotate(45deg); bottom: -8px; right: 12px; z-index: -1;"></div>
-</div>
+                    <div style="width: 37px; height: 37px; border-radius: 50%; border: 1px dashed rgba(168, 85, 247, 0.6); display: flex; justify-content: center; align-items: center;">
+                        <div style="width: 6px; height: 6px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px #ffffff;"></div>
+                    </div>
+                    <div style="position: absolute; width: 2px; height: 28px; background: rgba(168, 85, 247, 0.5); transform: rotate(45deg); bottom: -8px; right: 12px; z-index: -1;"></div>
+                </div>
                 <h3>Custom Photo Pins</h3>
                 <p>Carry your favorite moments wherever you go. Our custom photo pins feature vibrant, high-definition color printing protected by a sleek, glossy finish. Perfect for pinning onto bags, jackets, or straps to keep your best memories on display.</p>
                 <button class="cta-btn">Configure Asset</button>
@@ -381,7 +660,6 @@
         </div>
     </section>
 
-    
     <section id="process">
         <div class="section-subtitle">Workflow Strategy</div>
         <div class="section-title">How Creation Works</div>
@@ -389,54 +667,127 @@
         <div class="grid-layout">
             <div class="glass-card">
                 <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
-    <div style="width: 12px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2px solid #3b82f6; border-bottom: none; border-radius: 2px 2px 0 0; transform: rotate(45deg); position: relative; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 6px rgba(59, 130, 246, 0.3); top: -4px; left: -4px;">
-        <div style="width: 2px; height: 100%; background: rgba(59, 130, 246, 0.5); margin: 0 auto;"></div>
-    </div>
-    
-    <div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 10px solid #3b82f6; transform: rotate(45deg); position: absolute; bottom: 12px; left: 12px; filter: drop-shadow(0 0 8px #3b82f6);">
-        <div style="width: 3px; height: 3px; background: #ffffff; border-radius: 50%; position: absolute; top: -11px; left: -1.5px; box-shadow: 0 0 5px #ffffff;"></div>
-    </div>
-
-    <div style="position: absolute; width: 15px; height: 2px; background: linear-gradient(to right, #ffffff, transparent); transform: rotate(-45deg); bottom: 10px; left: 6px; box-shadow: 0 0 8px #ffffff; opacity: 0.8;"></div>
-</div>
+                    <div style="width: 12px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2px solid #3b82f6; border-bottom: none; border-radius: 2px 2px 0 0; transform: rotate(45deg); position: relative; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 6px rgba(59, 130, 246, 0.3); top: -4px; left: -4px;">
+                        <div style="width: 2px; height: 100%; background: rgba(59, 130, 246, 0.5); margin: 0 auto;"></div>
+                    </div>
+                    <div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 10px solid #3b82f6; transform: rotate(45deg); position: absolute; bottom: 12px; left: 12px; filter: drop-shadow(0 0 8px #3b82f6);">
+                        <div style="width: 3px; height: 3px; background: #ffffff; border-radius: 50%; position: absolute; top: -11px; left: -1.5px; box-shadow: 0 0 5px #ffffff;"></div>
+                    </div>
+                    <div style="position: absolute; width: 15px; height: 2px; background: linear-gradient(to right, #ffffff, transparent); transform: rotate(-45deg); bottom: 10px; left: 6px; box-shadow: 0 0 8px #ffffff; opacity: 0.8;"></div>
+                </div>
                 <h3>1. Send Concept</h3>
                 <p>Upload your images, text, or logos directly through our custom submission pipeline portals.</p>
             </div>
+
             <div class="glass-card">
                 <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
-    
-    <div style="width: 44px; height: 44px; border: 2px dashed rgba(168, 85, 247, 0.5); border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 12px rgba(168, 85, 247, 0.2); position: relative;">
-        
-        <div style="width: 22px; height: 22px; background: rgba(168, 85, 247, 0.2); border: 2.5px solid #a855f7; border-radius: 4px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.7), inset 0 0 6px rgba(168, 85, 247, 0.4); display: flex; justify-content: center; align-items: center;">
-            <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 6px #ffffff;"></div>
-        </div>
-
-        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; top: -1px; left: -1px;"></div>
-        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; top: -1px; left: -1px;"></div>
-        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; bottom: -1px; right: -1px;"></div>
-        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; bottom: -1px; right: -1px;"></div>
-    </div>
-</div>
-                <h3>2. Preparining Your Order</h3>
-                <p>Editing and Preparing your images to your custom order.</p>
+                    <div style="width: 44px; height: 44px; border: 2px dashed rgba(168, 85, 247, 0.5); border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 12px rgba(168, 85, 247, 0.2); position: relative;">
+                        <div style="width: 22px; height: 22px; background: rgba(168, 85, 247, 0.2); border: 2.5px solid #a855f7; border-radius: 4px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.7), inset 0 0 6px rgba(168, 85, 247, 0.4); display: flex; justify-content: center; align-items: center;">
+                            <div style="width: 4px; height: 4px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 6px #ffffff;"></div>
+                        </div>
+                        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; top: -1px; left: -1px;"></div>
+                        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; top: -1px; left: -1px;"></div>
+                        <div style="position: absolute; width: 6px; height: 2px; background: #a855f7; bottom: -1px; right: -1px;"></div>
+                        <div style="position: absolute; width: 2px; height: 6px; background: #a855f7; bottom: -1px; right: -1px;"></div>
+                    </div>
+                </div>
+                <h3>2. Preparing Layouts</h3>
+                <p>Editing and preparing your vectors or photos to fit your selected asset configuration precisely.</p>
             </div>
+
             <div class="glass-card">
                 <div class="icon-box" style="width: 55px; height: 55px; display: flex; justify-content: center; align-items: center; position: relative; margin: 0 auto 15px auto;">
-    
-    <div style="width: 32px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 4px; position: relative; box-shadow: 0 0 18px rgba(59, 130, 246, 0.6), inset 0 0 8px rgba(59, 130, 246, 0.3); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-        
-        <div style="width: 6px; height: 100%; background: #3b82f6; box-shadow: 0 0 6px rgba(59, 130, 246, 0.5); opacity: 0.8; display: flex; justify-content: center; align-items: center;">
-            <div style="width: 2px; height: 8px; background: #ffffff; opacity: 0.6;"></div>
-        </div>
-        
-        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; left: -1px;"></div>
-        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; right: -1px;"></div>
-    </div>
-
-    <div style="position: absolute; width: 12px; height: 2px; background: linear-gradient(to left, #ffffff, transparent); bottom: 10px; left: 2px; opacity: 0.6; transform: rotate(-15deg); box-shadow: 0 0 4px #ffffff;"></div>
-</div>
+                    <div style="width: 32px; height: 32px; background: rgba(59, 130, 246, 0.15); border: 2.5px solid #3b82f6; border-radius: 4px; position: relative; box-shadow: 0 0 18px rgba(59, 130, 246, 0.6), inset 0 0 8px rgba(59, 130, 246, 0.3); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                        <div style="width: 6px; height: 100%; background: #3b82f6; box-shadow: 0 0 6px rgba(59, 130, 246, 0.5); opacity: 0.8; display: flex; justify-content: center; align-items: center;">
+                            <div style="width: 2px; height: 8px; background: #ffffff; opacity: 0.6;"></div>
+                        </div>
+                        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; left: -1px;"></div>
+                        <div style="position: absolute; width: 10px; height: 2px; background: #3b82f6; top: 8px; right: -1px;"></div>
+                    </div>
+                    <div style="position: absolute; width: 12px; height: 2px; background: linear-gradient(to left, #ffffff, transparent); bottom: 10px; left: 2px; opacity: 0.6; transform: rotate(-15deg); box-shadow: 0 0 4px #ffffff;"></div>
+                </div>
                 <h3>3. Secure Delivery</h3>
                 <p>Your finished pieces are carefully packaged, and shipped directly to your door.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="ecosystem" class="diagram-section">
+        <div class="section-subtitle">Brand Pillars</div>
+        <div class="section-title">The Athar Customization Ecosystem</div>
+
+        <div class="diagram-scaler-wrapper">
+            <div class="matrix-container">
+                <div class="hub-center">
+                    <div class="hub-inner">
+                        <h2>ATHAR LB</h2>
+                        <p>Beyond Your Best Idea</p>
+                        <div class="hub-pulse"></div>
+                    </div>
+                </div>
+
+                <svg class="circuit-lines" viewBox="0 0 1150 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 230 140 L 360 140 L 410 240 L 490 240" stroke="url(#purpleGlowLine)" stroke-width="2" stroke-dasharray="5 5" />
+                    <path d="M 575 110 L 575 220" stroke="url(#cyanGlowLine)" stroke-width="2" />
+                    <path d="M 920 140 L 790 140 L 740 240 L 660 240" stroke="url(#purpleGlowLine)" stroke-width="2" />
+                    <path d="M 230 500 L 360 500 L 410 400 L 490 400" stroke="url(#blueGlowLine)" stroke-width="2" />
+                    <path d="M 575 530 L 575 420" stroke="url(#cyanGlowLine)" stroke-width="2" stroke-dasharray="5 5" />
+                    <path d="M 920 500 L 790 500 L 740 400 L 660 400" stroke="url(#blueGlowLine)" stroke-width="2" />
+
+                    <defs>
+                        <linearGradient id="purpleGlowLine" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#a855f7" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.1"/>
+                        </linearGradient>
+                        <linearGradient id="cyanGlowLine" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#a855f7" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.2"/>
+                        </linearGradient>
+                        <linearGradient id="blueGlowLine" x1="100%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#a855f7" stop-opacity="0.1"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div class="matrix-node node-tl purple-glow-border">
+                    <div style="display: flex; gap: 4px; margin-bottom: 4px;">
+                        <div style="width: 14px; height: 14px; border: 2px solid #a855f7; border-radius: 3px;"></div>
+                        <div style="width: 14px; height: 14px; border: 2px solid #3b82f6; border-radius: 50%;"></div>
+                    </div>
+                    <h4>Dual-Sided Plexiglass</h4>
+                    <p>Premium grade 3mm thick clear acrylic panels layered symmetrically for beautiful dual-sided viewing angles.</p>
+                </div>
+
+                <div class="matrix-node node-tm blue-glow-border">
+                    <div style="width: 28px; height: 14px; border: 2px dashed #3b82f6; border-radius: 4px; margin-bottom: 4px;"></div>
+                    <h4>Vector Layout Mapping</h4>
+                    <p>Precise asset configuration engines tailored to lock individual illustrations symmetrically onto gifts.</p>
+                </div>
+
+                <div class="matrix-node node-tr purple-glow-border">
+                    <div style="width: 16px; height: 16px; background: linear-gradient(45deg, #a855f7, transparent); border-radius: 50%; margin-bottom: 4px;"></div>
+                    <h4>Illustrated Art Prints</h4>
+                    <p>Hand-crafted digital line art tracing transitions that preserve real emotions into clean vector posters.</p>
+                </div>
+
+                <div class="matrix-node node-bl blue-glow-border">
+                    <div style="width: 20px; height: 6px; background: #3b82f6; border-radius: 2px; margin-bottom: 12px; position:relative;"><div style="position:absolute; width:6px; height:6px; background:#fff; border-radius:50%; right:-4px; top:-2px;"></div></div>
+                    <h4>HD High-Gloss Lamination</h4>
+                    <p>Vibrant color print micro-seals shielding custom designs from moisture, peeling, and natural micro-scratches.</p>
+                </div>
+
+                <div class="matrix-node node-bm purple-glow-border">
+                    <div style="width: 16px; height: 16px; border: 2px solid #a855f7; transform: rotate(45deg); margin-bottom: 4px;"></div>
+                    <h4>Zero-Friction Submission</h4>
+                    <p>Seamlessly upload original high-res photography snapshots directly straight into design production workflows.</p>
+                </div>
+
+                <div class="matrix-node node-br blue-glow-border">
+                    <div style="width: 18px; height: 14px; border: 2px solid #3b82f6; border-radius: 2px; display:flex; justify-content:center; align-items:center; margin-bottom: 4px;"><div style="width:6px; height:6px; background:#3b82f6; border-radius:50%;"></div></div>
+                    <h4>Secure Protective Packaging</h4>
+                    <p>Each customized badge, keychain, or custom print is safely wrapped to ensure scratch-free regional delivery.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -444,24 +795,24 @@
     <footer>
         <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.7;">
         <p class="footer-text-small">© 2026 ATHAR LB. Beyond Your Best Idea. All rights reserved.</p>
-        <p class="footer-text-small">Need custom support? Connect via <a href="#" class="neon-link">atharx.lb1@gmail.com</a></p>
+        <p class="footer-text-small">Need custom support? Connect via <a href="mailto:atharx.lb1@gmail.com" class="neon-link">atharx.lb1@gmail.com</a></p>
     </footer>
 
     <script>
-        const input = document.getElementById('mockupInput');
-        const colorSelect = document.getElementById('colorSelect');
-        const previewText = document.getElementById('previewText');
+        const menuToggleBtn = document.getElementById('mobileMenuBtn');
+        const navLinksMenu = document.getElementById('navLinksList');
 
-        function updatePreview() {
-            previewText.textContent = input.value || "ATHAR";
-            const selectedColor = colorSelect.value;
-            previewText.style.color = '#ffffff';
-            previewText.style.textShadow = `0 0 10px ${selectedColor}, 0 0 20px ${selectedColor}, 0 0 30px ${selectedColor}`;
-        }
+        menuToggleBtn.addEventListener('click', () => {
+            menuToggleBtn.classList.toggle('active');
+            navLinksMenu.classList.toggle('active');
+        });
 
-        input.addEventListener('input', updatePreview);
-        colorSelect.addEventListener('change', updatePreview);
-        updatePreview(); // Init glow array
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggleBtn.classList.remove('active');
+                navLinksMenu.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>

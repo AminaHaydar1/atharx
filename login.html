@@ -3,485 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Blossom & Blue</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Delius&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Access Your Profile | Athar LB</title>
     <style>
-        /* ==========================================================================
-           GLOBAL STRUCTURE & BACKDROP CANVAS
-           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Playfair Display', 'Segoe UI', serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, rgba(255,236,210,0.8) 0%, rgba(252,182,159,0.8) 50%, rgba(219,182,216,0.8) 100%),
-                        url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNCI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwaDIwdjIwSDIWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4=');
-            color: #2D1B3F;
-            line-height: 1.7;
+            background-color: #0b0813;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
+            background-image: radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.18) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(29, 78, 216, 0.18) 0%, transparent 40%);
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* ==========================================================================
-           STICKY HEADER NAVIGATION
-           ========================================================================== */
+        /* --- NEON HEADER & NAVBAR --- */
         header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 3px solid rgba(255, 111, 97, 0.3);
-            box-shadow: 0 4px 20px rgba(45, 27, 63, 0.05);
-        }
-
-        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            position: relative;
+            padding: 15px 8%;
+            background: rgba(15, 12, 28, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .logo-wrapper {
+        .logo-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            z-index: 110;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+        }
+
+        /* --- NAV COHESION --- */
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .desktop-login-btn {
+            display: inline-block;
+            padding: 8px 22px;
+            border: 1px solid #a855f7;
+            border-radius: 6px;
+            color: #ffffff;
             text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: rgba(168, 85, 247, 0.05);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+            transition: all 0.3s ease;
+            order: 2;
         }
 
-        .logo-icon {
-            background: linear-gradient(135deg, #9B5DE5, #FF6F61);
-            color: white;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 18px;
+        .desktop-login-btn:hover {
+            background: #a855f7;
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.6);
+            transform: translateY(-1px);
         }
-
-        .logo-text {
-            font-family: 'Delius', cursive;
-            font-size: 22px;
-            font-weight: 800;
-            color: #2D1B3F;
-            letter-spacing: 1px;
-        }
-
-        .logo-text span { color: #FF6F61; }
-        .menu-checkbox { display: none; }
 
         .menu-toggle {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
-            z-index: 110;
+            border: none;
+            background: transparent;
             padding: 5px;
+            z-index: 1010;
         }
 
         .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background-color: #FF6F61;
-            border-radius: 3px;
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex: 1;
-            margin-left: 30px;
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
         .nav-links {
-            display: flex;
             list-style: none;
-            gap: 24px;
+            display: flex;
+            gap: 35px;
             align-items: center;
         }
 
         .nav-links a {
-            font-weight: 600;
-            color: #5A416D;
-            transition: color 0.2s;
-            padding: 10px 4px;
-            font-size: 16px;
+            color: #cbd5e1;
             text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
-        .nav-links a:hover { color: #9B5DE5; }
-
-        .nav-customize-btn {
-            background: rgba(255, 111, 97, 0.08);
-            border: 1px dashed #FF6F61;
-            color: #FF6F61 !important;
-            padding: 8px 18px !important;
-            border-radius: 20px;
-            font-weight: 600 !important;
-            font-size: 16px !important;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            transition: all 0.3s ease !important;
+        .nav-links a:hover {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
         }
 
-        .nav-customize-btn:hover {
-            background: linear-gradient(135deg, #9B5DE5, #FF6F61) !important;
-            border-color: transparent;
-            color: #FFF !important;
-        }
-
-        .nav-utilities { display: flex; align-items: center; gap: 15px; }
-
-        .cart-btn {
-            background: #9B5DE5;
-            color: #FFFFFF;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            text-decoration: none;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #FF6F61;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        .mobile-only-login {
             display: none;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #FFFFFF;
+            width: 100%;
         }
 
-        /* ==========================================================================
-           AUTHENTICATION FORM PANEL
-           ========================================================================== */
-        .auth-wrapper {
+        /* --- AUTH CENTERED PANEL --- */
+        .auth-container {
             flex-grow: 1;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 60px 0;
-        }
-
-        .auth-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(155, 93, 229, 0.15);
-            border-radius: 25px;
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(45, 27, 63, 0.05);
-        }
-
-        .auth-card h1 {
-            font-size: 28px;
-            color: #2D1B3F;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .auth-subtitle {
-            text-align: center;
-            color: #5A416D;
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
-
-        .form-control-wrapper {
-            margin-bottom: 22px;
-        }
-
-        .form-control-wrapper label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #5A416D;
-            margin-bottom: 8px;
-        }
-
-        .input-group {
-            position: relative;
-            display: flex;
             align-items: center;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 15px;
-            color: rgba(155, 93, 229, 0.6);
-            font-size: 16px;
-        }
-
-        .form-input {
+            padding: 60px 4%;
             width: 100%;
-            padding: 12px 16px 12px 45px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(155, 93, 229, 0.25);
-            border-radius: 12px;
+        }
+
+        .auth-pane {
+            background: rgba(20, 16, 38, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid #a855f7;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            padding: 45px 40px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .auth-pane h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-pane p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a855f7;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(11, 8, 19, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: #ffffff;
             font-size: 15px;
-            color: #2D1B3F;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
-        .form-input:focus {
-            border-color: #9B5DE5;
-            box-shadow: 0 0 0 3px rgba(155, 93, 229, 0.12);
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
         }
 
-        .form-options-row {
+        .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .remember-me-checkbox {
+        .remember-me {
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #5A416D;
+            color: #cbd5e1;
             cursor: pointer;
         }
 
-        .remember-me-checkbox input {
-            accent-color: #9B5DE5;
+        .remember-me input {
+            accent-color: #a855f7;
         }
 
-        .forgot-password-link {
-            color: #FF6F61;
+        .forgot-pass {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-pass:hover {
+            color: #a855f7;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.55);
+        }
+
+        .switch-auth {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .switch-auth a {
+            color: #3b82f6;
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.2s;
+            margin-left: 4px;
         }
 
-        .forgot-password-link:hover {
-            color: #9B5DE5;
+        .switch-auth a:hover {
+            color: #a855f7;
         }
 
-        .auth-submit-btn {
-            display: block;
-            width: 100%;
-            background: linear-gradient(135deg, #9B5DE5, #FF6F61);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.2);
-            transition: transform 0.2s;
-            margin-bottom: 25px;
-        }
-
-        .auth-submit-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .auth-footer-text {
-            text-align: center;
-            font-size: 15px;
-            color: #5A416D;
-        }
-
-        .auth-footer-text a {
-            color: #9B5DE5;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .auth-footer-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* ==========================================================================
-           FOOTER & RESPONSIVE MEDIA BREAKPOINTS
-           ========================================================================== */
+        /* --- FOOTER REGION --- */
         footer {
-            background-color: #2D1B3F;
-            color: #FFFFFF;
-            padding: 30px 0;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            background: #06040a;
+            padding: 40px 8%;
             text-align: center;
-            font-size: 14px;
-            border-top: 5px solid #FF6F61;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
             margin-top: auto;
         }
 
-        @media (max-width: 868px) {
+        .footer-text-small {
+            font-size: 12px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .neon-link {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .neon-link:hover {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168,85,247,0.5);
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .desktop-login-btn { display: none; }
             .menu-toggle { display: flex; }
-            .nav-menu {
-                position: absolute;
-                top: 100%;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 64px);
-                background-color: #2D1B3F;
+            .nav-links {
+                position: fixed;
+                top: 86px;
+                right: -100%;
+                width: 260px;
+                height: auto;
+                background: rgba(15, 12, 28, 0.96);
+                backdrop-filter: blur(25px);
+                border-left: 1px solid rgba(168, 85, 247, 0.25);
+                border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+                border-bottom-left-radius: 16px;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 35px;
-                padding: 55px 0;
-                margin-left: 0;
-                transition: left 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+                padding: 40px 30px;
+                gap: 25px;
+                align-items: flex-start;
+                transition: right 0.4s ease;
             }
-            .nav-links { flex-direction: column; gap: 25px; }
-            .nav-links a { color: #FFFFFF; }
-            .nav-customize-btn { width: 80%; justify-content: center; }
-            .menu-checkbox:checked ~ .nav-menu { left: 0; }
-            .auth-card { padding: 30px 20px; }
+            .nav-links.active { right: 0; }
+            .mobile-only-login { display: block; margin-top: 15px; width: 100%; }
+            .login-btn-mobile {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 12px 0;
+                background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+                border-radius: 8px;
+                color: #ffffff !important;
+                font-weight: 700 !important;
+                box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+            }
+            .auth-pane { padding: 35px 25px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container navbar">
-            <a href="index.html" class="logo-wrapper">
-                <div class="logo-icon"><i class="fa-solid fa-seedling"></i></div>
-                <div class="logo-text">Blossom<span>& Blue</span></div>
-            </a>
-            
-            <input type="checkbox" id="menu-bar" class="menu-checkbox">
-            <label for="menu-bar" class="menu-toggle">
-                <span></span><span></span><span></span>
-            </label>
+        <div class="logo-container">
+            <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
+        </div>
+        
+        <div class="nav-wrapper">
+            <a href="signup.html" class="desktop-login-btn">Login / Sign Up</a>
 
-            <nav class="nav-menu">
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="bouquets.html">Bouquets</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="#" class="nav-customize-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize</a></li>
-                </ul>
-                <div class="nav-utilities">
-                    <a href="addcart.html" class="cart-btn">
-                        <i class="fa-solid fa-shopping-bag"></i>
-                        <span class="cart-badge" id="global-cart-count">0</span>
-                    </a>
-                </div>
-            </nav>
+            <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-links" id="navLinksList">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="customize.html">Customization</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li class="mobile-only-login"><a href="signup.html" class="login-btn-mobile">Login / Sign Up</a></li>
+            </ul>
         </div>
     </header>
 
-    <main class="auth-wrapper container">
-        <div class="auth-card">
-            <h1>Welcome Back</h1>
-            <p class="auth-subtitle">Log in to manage your premium botanical orders</p>
-            
-            <form onsubmit="alert('Login demo complete!'); return false;">
-                <div class="form-control-wrapper">
-                    <label for="email">Email Address</label>
-                    <div class="input-group">
-                        <i class="fa-regular fa-envelope"></i>
-                        <input type="email" id="email" class="form-input" required placeholder="name@example.com">
-                    </div>
+    <main class="auth-container">
+        <div class="auth-pane">
+            <h2>Welcome Back</h2>
+            <p>Log in to view your dynamic custom production queue parameters.</p>
+
+            <form action="login.php" method="POST">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" name="email" class="form-control" placeholder="yourname@domain.com" required>
                 </div>
 
-                <div class="form-control-wrapper">
-                    <label for="password">Password</label>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="password" class="form-input" required placeholder="••••••••">
-                    </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
-                <div class="form-options-row">
-                    <label class="remember-me-checkbox">
-                        <input type="checkbox"> Remember me
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe" name="remember_me"> Remember Profile
                     </label>
-                    <a href="#" class="forgot-password-link" onclick="alert('Password recovery configuration module triggered.');">Forgot Password?</a>
+                    <a href="#" class="forgot-pass">Recover Password?</a>
                 </div>
 
-                <button type="submit" class="auth-submit-btn">Log In</button>
+                <button type="submit" class="submit-btn">Access Profile</button>
             </form>
 
-            <div class="auth-footer-text">
-                Don't have an account? <a href="signup.html">Create Account</a>
+            <div class="switch-auth">
+                New to Athar? <a href="signup.html">Create an Account</a>
             </div>
         </div>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 Blossom & Blue Studio. Crafted beautifully for unforgettable moments.</p>
-        </div>
+        <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.7;">
+        <p class="footer-text-small">© 2026 ATHAR LB. Beyond Your Best Idea. All rights reserved.</p>
+        <p class="footer-text-small">
+            <a href="https://instagram.com/atharx_lb1" target="_blank" class="neon-link">Instagram</a> | 
+            WhatsApp: <a href="https://wa.me/96181433846" target="_blank" class="neon-link">+961 81 433 846</a> | 
+            Location: Ras el Nabeh, Beirut (Near Malik's, facing Bank Audi)
+        </p>
     </footer>
 
     <script>
-        function updateNavbarCartBadge() {
-            const badgeElement = document.getElementById('global-cart-count');
-            if (!badgeElement) return;
+        // Responsive mobile navbar animation toggle
+        const menuToggleBtn = document.getElementById('mobileMenuBtn');
+        const navLinksMenu = document.getElementById('navLinksList');
 
-            let cartData = localStorage.getItem('cart') || localStorage.getItem('cartItems');
-            let count = 0;
+        menuToggleBtn.addEventListener('click', () => {
+            menuToggleBtn.classList.toggle('active');
+            navLinksMenu.classList.toggle('active');
+        });
 
-            if (cartData && cartData !== '[]' && cartData !== '""' && cartData !== 'null' && cartData !== 'undefined') {
-                try {
-                    const parsed = JSON.parse(cartData);
-                    if (Array.isArray(parsed)) {
-                        if (parsed.length === 0) {
-                            count = 0;
-                        } else {
-                            count = parsed.reduce((total, item) => total + (parseInt(item.quantity, 10) || 1), 0);
-                        }
-                    } else if (typeof parsed === 'number') {
-                        count = parsed;
-                    } else if (typeof parsed === 'object' && parsed !== null) {
-                        count = parseInt(parsed.quantity, 10) || 1;
-                    }
-                } catch(e) {
-                    const directNum = parseInt(cartData, 10);
-                    count = !isNaN(directNum) ? directNum : 0;
-                }
+        // Capture URL response status alerts pushed via login.php or signup.php
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Fires if redirected straight out from a successful signup pipeline completion
+            if (urlParams.get('registration') === 'success') {
+                alert('Account generated successfully! Log in below with your credentials.');
             }
-
-            if (count <= 0) {
-                badgeElement.style.display = 'none';
-                badgeElement.textContent = '0';
-            } else {
-                badgeElement.style.display = 'flex';
-                badgeElement.textContent = count;
+            
+            // Catches error responses generated by backend structural loops
+            if (urlParams.has('error')) {
+                const err = urlParams.get('error');
+                if (err === 'wrongpassword') alert('Invalid credentials. Please double check your entry values.');
+                if (err === 'usernotfound') alert('No system profile currently exists under this email registry.');
+                if (err === 'emptyfields') alert('Validation check bypassed. Please fill out all required interface fields.');
+                if (err === 'invalidemail') alert('Provided text string does not match structural email standards.');
+                if (err === 'servererror') alert('A system pipeline exception was caught. Contact support or retry.');
             }
-        }
-        document.addEventListener('DOMContentLoaded', updateNavbarCartBadge);
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Athar Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0813;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+        }
+
+        /* --- NAVIGATION HEADER ARCHITECTURE --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(15, 12, 28, 0.75);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #a855f7;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Responsive Mobile Menu Trigger */
+        .menu-trigger {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-bar { 
+            width: 20px; 
+            height: 2px; 
+            background-color: #ffffff; 
+            border-radius: 2px; 
+            transition: all 0.3s ease;
+        }
+
+        /* --- RESPONSIVE MOBILE NAVIGATION OVERLAY --- */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 86px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 86px);
+            background: rgba(11, 8, 19, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            gap: 25px;
+            transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border-top: 1px solid rgba(168, 85, 247, 0.15);
+        }
+
+        .mobile-nav-overlay.active { left: 0; }
+        .mobile-nav-overlay a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .mobile-nav-overlay a:hover, .mobile-nav-overlay a.active { color: #a855f7; }
+
+        /* --- ABOUT CONTENT CONTAINER --- */
+        .about-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 4%;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-header h1 {
+            font-size: 46px;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .about-header p {
+            color: #a855f7;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Story Block Showcase Layout */
+        .story-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .story-content h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .story-content h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 40px;
+            height: 2px;
+            background: #a855f7;
+            box-shadow: 0 0 8px #a855f7;
+        }
+
+        .story-content p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        /* Dynamic Image Card Containers */
+        .story-visual {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(15, 12, 28, 0.4);
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease;
+        }
+
+        .story-visual:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .showcase-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.70;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.3s ease;
+        }
+
+        .story-visual:hover .showcase-img {
+            transform: scale(1.08);
+            opacity: 0.95;
+        }
+
+        /* Soft Neon Backdrop Behind Images */
+        .visual-glow-core {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(45deg, #a855f7, #3b82f6);
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.3;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .visual-studio-tag {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 2;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 11px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 30px;
+            background: rgba(11, 8, 19, 0.8);
+            backdrop-filter: blur(8px);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+
+        /* --- THE CORE VALUES SYSTEM (CARDS) --- */
+        .values-section {
+            margin-top: 100px;
+        }
+
+        .values-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .values-title h2 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .value-card {
+            background: rgba(15, 12, 28, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            background: rgba(20, 16, 38, 0.8);
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .value-icon {
+            font-size: 28px;
+            color: #a855f7;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .value-card:hover .value-icon {
+            color: #3b82f6;
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+        }
+
+        .value-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .value-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Call To Action Block */
+        .about-cta {
+            background: linear-gradient(135deg, rgba(15, 12, 28, 0.9) 0%, rgba(26, 17, 54, 0.6) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            margin-top: 100px;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.1);
+        }
+
+        .about-cta h2 { font-size: 32px; margin-bottom: 15px; font-weight: 700; }
+        .about-cta p { color: #cbd5e1; max-width: 600px; margin: 0 auto 25px auto; font-size: 15px; line-height: 1.6; }
+        
+        .cta-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(to right, #a855f7, #3b82f6);
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+        }
+
+        footer { border-top: 1px solid rgba(168, 85, 247, 0.2); background: #06040a; padding: 40px 8%; text-align: center; margin-top: 120px; }
+
+        /* --- GLOBAL MEDIA QUERIES --- */
+        @media (max-width: 1100px) {
+            header { padding: 15px 4%; }
+            .nav-container { gap: 20px; }
+            .nav-links { gap: 20px; }
+        }
+
+        @media (max-width: 900px) {
+            header { padding: 15px 5%; }
+            .menu-trigger { display: flex; }
+            .nav-links { display: none; }
+            
+            .about-header h1 { font-size: 36px; }
+            .story-row { grid-template-columns: 1fr; gap: 40px; margin-bottom: 60px; }
+            .story-visual { height: 300px; }
+        }
+
+        @media (max-width: 480px) {
+            .about-header h1 { font-size: 30px; }
+            .story-content h2 { font-size: 24px; }
+            .story-content p { font-size: 14px; }
+            .about-cta { padding: 30px 20px; }
+            .about-cta h2 { font-size: 24px; }
+            .cta-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="menu-trigger" id="mobileMenuBtn" onclick="toggleMobileNav()">
+            <div class="menu-bar"></div>
+            <div class="menu-bar" style="margin: 4px 0;"></div>
+            <div class="menu-bar"></div>
+        </button>
+        <div class="logo-container">
+            <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
+        </div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="customize.php">Custom Lab</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobileNavigationContainer">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="customize.php">Custom Lab</a>
+        <a href="about.html" class="active">About Us</a>
+        <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div class="about-container">
+        
+        <div class="about-header">
+            <p>Behind the Brand Architecture</p>
+            <h1>Our Story & Ethos</h1>
+        </div>
+
+        <div class="story-row">
+            <div class="story-content">
+                <h2>The Spark of ATHAR</h2>
+                <p>Founded with a bold vision to break away from mass manufacturing loops, ATHAR Studio serves as an experimental forge where functional design cross-sections with bespoke luxury handicraft.</p>
+                <p>We build items that resonate on a personal frequency. Whether engineering precision-cut vector wooden plaques or tailoring multilayered vibrant ribbon bouquets, our methodology remains completely untethered from assembly line shortcuts.</p>
+            </div>
+            <div class="story-visual">
+                <div class="visual-glow-core"></div>
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Creative abstract wave geometry" class="showcase-img">
+                <div class="visual-studio-tag">// ATHAR ORIGIN ALPHA</div>
+            </div>
+        </div>
+
+        <div class="story-row" style="direction: rtl;">
+            <div class="story-content" style="direction: ltr;">
+                <h2>Bespoke Lab Ideals</h2>
+                <p>Our signature Custom Lab provides clients with absolute layout dominance. By engineering direct media vector channels, you transfer conceptual digital illustrations directly into physical asset mediums like acrylic, wood, or fine laminate sheets.</p>
+                <p>We handle every variable down to raw Hex color profile inputs, guaranteeing your final display assets look exactly as intended when deployed into production spaces.</p>
+            </div>
+            <div class="story-visual" style="direction: ltr;">
+                <div class="visual-glow-core" style="background: linear-gradient(45deg, #3b82f6, #06b6d4);"></div>
+                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80" alt="Abstract digital matrix artwork" class="showcase-img">
+                <div class="visual-studio-tag">// PRODUCTION VECTOR METRICS</div>
+            </div>
+        </div>
+
+        <div class="values-section">
+            <div class="values-title">
+                <h2>Our Blueprint Guidelines</h2>
+            </div>
+            <div class="values-grid">
+                
+                <div class="value-card">
+                    <span class="value-icon">✦</span>
+                    <h3>Absolute Customization</h3>
+                    <p>No generic presets. We build adaptable production pipelines around your uploaded artwork matrices and precise dimension guidelines.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">⚙</span>
+                    <h3>Material Precision</h3>
+                    <p>From deep laser-etched natural woods to high-impact acrylic compounds, our premium materials ensure your physical assets stand the test of time.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">👁</span>
+                    <h3>Visual Fidelity</h3>
+                    <p>What you define is what we build. We process your custom parameters exactly as specified to deliver highly accurate, custom pieces.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="about-cta">
+            <h2>Have an idea in mind?</h2>
+            <p>Step straight inside our real-time Bespoke Custom Lab engine. Load up your design files, calibrate your scale variables, and watch your concepts turn into reality.</p>
+            <a href="customize.html" class="cta-btn">Initialize Custom Engine</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.6; margin-bottom: 10px;">
+        <p style="font-size: 12px; color: #64748b;">© 2026 ATHAR Studio. Beyond Your Best Idea. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileNav() {
+            const mobNav = document.getElementById('mobileNavigationContainer');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            mobNav.classList.toggle('active');
+            
+            if(mobNav.classList.contains('active')) {
+                menuBtn.style.borderColor = "#a855f7";
+            } else {
+                menuBtn.style.borderColor = "rgba(255, 255, 255, 0.1)";
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900) {
+                document.getElementById('mobileNavigationContainer').classList.remove('active');
+                document.getElementById('mobileMenuBtn').style.borderColor = "rgba(255, 255, 255, 0.1)";
+            }
+        });
+    </script>
+</body>
+</html>

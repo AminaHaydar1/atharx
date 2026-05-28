@@ -72,7 +72,31 @@
             text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
         }
 
-        /* --- STYLISH NAVBAR VECTOR CART ICON --- */
+        /* Navbar Vector Menu Toggle (Mobile Only) */
+        .menu-trigger {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-bar {
+            width: 20px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Navbar Vector Cart Icon */
         .cart-trigger {
             background: rgba(168, 85, 247, 0.1);
             border: 1px solid #a855f7;
@@ -91,7 +115,6 @@
             background: rgba(168, 85, 247, 0.2);
         }
 
-        /* Pure Vector Shopping Cart Container */
         .cart-icon-container {
             position: relative;
             width: 22px;
@@ -183,7 +206,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 50px;
         }
 
@@ -244,28 +267,153 @@
 
         .product-img-box {
             width: 100%;
-            height: 200px;
+            height: 170px;
             background: radial-gradient(circle, rgba(29, 21, 54, 0.6) 0%, rgba(11, 8, 19, 0.8) 100%);
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-thumbnail-img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        .product-card:hover .product-thumbnail-img {
+            transform: scale(1.08);
         }
 
         .product-info h3 {
             font-size: 19px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .product-card.purple-accent .product-price { color: #a855f7; }
 
         .product-info p {
             color: #94a3b8;
             font-size: 13px;
             line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             min-height: 40px;
+        }
+
+        /* --- PRODUCT OPTIONS SECTION --- */
+        .product-options-section {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .option-toggle-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .option-label {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 0;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-label input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .option-label:has(input:checked) {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .product-card.purple-accent .option-label:has(input:checked) {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: #a855f7;
+        }
+
+        /* --- PRODUCT COLOR SELECTOR ELEMENTS --- */
+        .product-color-section {
+            margin-bottom: 20px;
+        }
+
+        .color-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .color-swatch-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .swatch-label {
+            position: relative;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .swatch-label input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .swatch-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .swatch-label.color-black .swatch-btn { background-color: #1e1b29; color: #1e1b29; }
+        .swatch-label.color-white .swatch-btn { background-color: #f8fafc; color: #f8fafc; }
+        .swatch-label.color-purple .swatch-btn { background-color: #a855f7; color: #a855f7; }
+        .swatch-label.color-blue .swatch-btn { background-color: #3b82f6; color: #3b82f6; }
+
+        .swatch-label input:checked + .swatch-btn {
+            transform: scale(1.2);
+            border-color: #ffffff;
+            box-shadow: 0 0 10px currentColor;
         }
 
         .product-footer {
@@ -308,12 +456,13 @@
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
         }
 
-        /* --- SIDEBAR DRAWER PANEL --- */
+        /* --- SIDEBAR CART PANEL --- */
         .cart-sidebar {
             position: fixed;
             top: 0;
-            right: -420px;
+            right: -100%;
             width: 420px;
+            max-width: 100%;
             height: 100vh;
             background: rgba(10, 7, 18, 0.96);
             backdrop-filter: blur(20px);
@@ -327,6 +476,73 @@
         }
 
         .cart-sidebar.open { right: 0; }
+
+        /* --- SIDEBAR MOBILE NAVIGATION SLIDE BAR --- */
+        .nav-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 300px;
+            max-width: 85%;
+            height: 100vh;
+            background: rgba(15, 12, 28, 0.98);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(168, 85, 247, 0.25);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .nav-sidebar.open { left: 0; }
+
+        .nav-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .nav-sidebar-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .nav-sidebar-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .nav-sidebar-links a:hover, .nav-sidebar-links a.active {
+            color: #a855f7;
+            padding-left: 8px;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1500;
+            display: none;
+        }
+        .sidebar-overlay.active { display: block; }
 
         .cart-side-header {
             display: flex;
@@ -390,26 +606,79 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .cart-item-details { flex-grow: 1; }
+        .cart-item-thumb img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .cart-item-details { flex-grow: 1; min-width: 0; }
 
         .cart-item-title {
             font-weight: 600;
             font-size: 14px;
             color: #ffffff;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cart-item-meta {
+            font-size: 11px;
+            color: #64748b;
             margin-bottom: 4px;
         }
 
-        .cart-item-qty-badge {
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.4);
+        .cart-item-price {
+            font-size: 13px;
+            color: #a855f7;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .cart-item-qty-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-qty-inline-picker {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            width: 85px;
+            height: 24px;
+        }
+
+        .cart-qty-inline-btn {
+            background: transparent;
+            border: none;
             color: #3b82f6;
+            width: 25px;
+            height: 100%;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .cart-qty-inline-btn:hover { background: rgba(59, 130, 246, 0.2); }
+
+        .cart-qty-inline-display {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            text-align: center;
             font-size: 11px;
             font-weight: 700;
-            padding: 1px 8px;
-            border-radius: 4px;
+            width: 100%;
         }
 
         .remove-item-btn {
@@ -421,6 +690,7 @@
             cursor: pointer;
             padding: 5px;
             transition: color 0.2s;
+            flex-shrink: 0;
         }
         .remove-item-btn:hover { color: #ef4444; }
 
@@ -469,7 +739,6 @@
             font-size: 14px;
         }
 
-        /* Footer */
         footer {
             border-top: 1px solid rgba(168, 85, 247, 0.2);
             background: #06040a;
@@ -477,20 +746,58 @@
             text-align: center;
             margin-top: 100px;
         }
+
+        @media (max-width: 992px) {
+            header { padding: 15px 5%; }
+            .nav-container { gap: 20px; }
+            .nav-links { gap: 20px; }
+            .catalog-container { margin: 40px auto; }
+            .catalog-header h1 { font-size: 36px; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 15px 4%; }
+            .menu-trigger { display: flex; }
+            .nav-links { display: none; }
+            .nav-container { gap: 15px; }
+            .catalog-header h1 { font-size: 30px; }
+            .filter-menu { margin-bottom: 35px; gap: 8px; }
+            .filter-btn { padding: 8px 18px; font-size: 12px; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+            .cart-sidebar { padding: 20px; width: 100%; }
+            .cart-side-header h2 { font-size: 18px; }
+        }
+
+        @media (max-width: 480px) {
+            header { justify-content: space-between; }
+            .catalog-header h1 { font-size: 26px; }
+            .products-grid { grid-template-columns: 1fr; }
+            .product-card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="sidebar-overlay" id="sidebarDimmer" onclick="closeAllSidebars()"></div>
+
     <header>
+        <button class="menu-trigger" onclick="toggleNavMenu(true)">
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+        </button>
+
         <div class="logo-container">
             <img src="image/athar logo-09.png" alt="Athar Logo" class="logo-img">
         </div>
+
         <div class="nav-container">
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html" class="active">Products</a></li>
-                <li><a href="index.html#preview">Live Mockup</a></li>
-                <li><a href="index.html#process">Our Process</a></li>
+                <li><a href="customize.php">Customization</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
             </ul>
             <div class="cart-trigger" onclick="toggleCart(true)">
                 <div class="cart-icon-container">
@@ -503,6 +810,41 @@
         </div>
     </header>
 
+    <div class="nav-sidebar" id="navSidebarPanel">
+        <div class="nav-sidebar-header">
+            <img src="image/athar logo-09.png" alt="Athar Logo" style="height: 40px; width: auto;">
+            <button class="close-cart" onclick="toggleNavMenu(false)">×</button>
+        </div>
+        <ul class="nav-sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html" class="active">Products</a></li>
+            <li><a href="customize.php">Customization</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebarPanel">
+        <div class="cart-side-header">
+            <h2>Cart Drawer</h2>
+            <button class="close-cart" onclick="toggleCart(false)">×</button>
+        </div>
+        <div class="cart-items-wrapper" id="cartDrawerList">
+            <div class="empty-cart-msg">Your configuration rack is empty.</div>
+        </div>
+        <div class="cart-summary-block">
+            <div class="summary-row">
+                <span>Items Selected</span>
+                <span id="summaryItemsCount">0 items</span>
+            </div>
+            <div class="summary-row total-line">
+                <span>Total Balance</span>
+                <span id="summaryTotalValue">$0.00</span>
+            </div>
+        </div>
+        <button class="cart-checkout-btn" onclick="alert('Proceeding to deployment checkout panel...')">Deploy Checkout</button>
+    </div>
+
     <div class="catalog-container">
         <div class="catalog-header">
             <p>Athar Studio Blueprint Store</p>
@@ -510,226 +852,338 @@
         </div>
 
         <div class="filter-menu">
-            <button class="filter-btn active" onclick="filterItems('all')">All Studios</button>
-            <button class="filter-btn" onclick="filterItems('stationery')">Stationery</button>
-            <button class="filter-btn" onclick="filterItems('electronics')">Electronics</button>
-            <button class="filter-btn" onclick="filterItems('toys')">Toys & Hobbies</button>
-            <button class="filter-btn" onclick="filterItems('gifts')">Luxury Gifts</button>
-            <button class="filter-btn" onclick="filterItems('customization')">Custom Lab</button>
+            <button class="filter-btn active" id="btn-all" onclick="filterItems('all')">All Items</button>
+            <button class="filter-btn" id="btn-stationery" onclick="filterItems('stationery')">Stationery</button>
+            <button class="filter-btn" id="btn-electronics" onclick="filterItems('electronics')">Electronics</button>
+            <button class="filter-btn" id="btn-toys" onclick="filterItems('toys')">Toys & Games</button>
+            <button class="filter-btn" id="btn-gifts" onclick="filterItems('gifts')">Gifts</button>
+            <button class="filter-btn" id="btn-customization" onclick="filterItems('customization')">Birthdays</button>
         </div>
 
-        <div class="products-grid" id="catalogGrid">
-            
-            <div class="product-card blue-accent" data-category="stationery">
-                <div class="product-img-box" id="thumb-journal">
-                    <div style="width: 24px; height: 32px; border: 2.5px solid #3b82f6; border-radius: 4px; box-shadow: 0 0 12px #3b82f6; position: relative; background: rgba(59, 130, 246, 0.1);">
-                        <div style="position: absolute; left: 4px; top: 6px; width: 12px; height: 2px; background: rgba(59, 130, 246, 0.4);"></div>
-                        <div style="position: absolute; left: 4px; top: 12px; width: 12px; height: 2px; background: rgba(59, 130, 246, 0.4);"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Laser Engraved Journal</h3>
-                    <p>Premium dark leather-bound hardcover notebooks lined for clean drafting.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Stationery</span>
-                    <button class="add-cart-btn" onclick="addToCart('Laser Engraved Journal', 'journal')">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="product-card purple-accent" data-category="electronics">
-                <div class="product-img-box" id="thumb-powerbank">
-                    <div style="width: 36px; height: 22px; border: 2.5px solid #a855f7; border-radius: 6px; box-shadow: 0 0 12px #a855f7; position: relative; background: rgba(168, 85, 247, 0.1);">
-                        <div style="position: absolute; right: -5px; top: 6px; width: 3px; height: 6px; background: #a855f7; border-radius: 0 2px 2px 0;"></div>
-                        <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%; position: absolute; left: 6px; top: 6px; box-shadow: 0 0 6px #22c55e;"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Stealth Power Bank</h3>
-                    <p>10,000mAh structural charging bricks etched clean with your business branding logo.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Electronics</span>
-                    <button class="add-cart-btn" onclick="addToCart('Stealth Power Bank', 'powerbank')">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="product-card blue-accent" data-category="toys">
-                <div class="product-img-box" id="thumb-puzzle">
-                    <div style="width: 28px; height: 28px; border: 2.5px solid #3b82f6; border-radius: 4px; box-shadow: 0 0 12px #3b82f6; transform: rotate(15deg); position: relative; background: rgba(59, 130, 246, 0.1);">
-                        <div style="position: absolute; left: 11px; top: 0; width: 2px; height: 24px; background: #3b82f6;"></div>
-                        <div style="position: absolute; left: 0; top: 11px; width: 24px; height: 2px; background: #3b82f6;"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Acrylic Block Puzzle</h3>
-                    <p>Precision inter-locking vector cut desktop puzzle tiles configured from scratch.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Toys</span>
-                    <button class="add-cart-btn" onclick="addToCart('Acrylic Block Puzzle', 'puzzle')">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="product-card purple-accent" data-category="gifts">
-                <div class="product-img-box" id="thumb-hamper">
-                    <div style="width: 32px; height: 32px; border: 2.5px solid #a855f7; border-radius: 6px; box-shadow: 0 0 12px #a855f7; position: relative; background: rgba(168, 85, 247, 0.1);">
-                        <div style="position: absolute; left: 0; top: 13px; width: 28px; height: 2px; background: #a855f7;"></div>
-                        <div style="position: absolute; left: 13px; top: 0; width: 2px; height: 28px; background: #a855f7;"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Executive VIP Hamper</h3>
-                    <p>A beautifully curated matte finish box packed with customized premium desk layout gears.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Gifts</span>
-                    <button class="add-cart-btn" onclick="addToCart('Executive VIP Hamper', 'hamper')">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="product-card blue-accent" data-category="customization">
-                <div class="product-img-box" id="thumb-keychain">
-                    <div style="position: relative; width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center;">
-                        <div style="width: 12px; height: 12px; border: 2px solid #3b82f6; border-radius: 50%; margin-bottom: 2px;"></div>
-                        <div style="width: 16px; height: 24px; border: 2.5px solid #3b82f6; border-radius: 3px; background: rgba(59, 130, 246, 0.15); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Plexi Glow Keychain</h3>
-                    <p>Vertical crystal clear cast acrylic blocks featuring bright color filled vector edge cuts.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Custom Lab</span>
-                    <button class="add-cart-btn" onclick="addToCart('Plexi Glow Keychain', 'keychain')">Add to Cart</button>
-                </div>
-            </div>
-
-            <div class="product-card purple-accent" data-category="customization">
-                <div class="product-img-box" id="thumb-pins">
-                    <div style="width: 30px; height: 30px; border: 2.5px solid #a855f7; border-radius: 50%; box-shadow: 0 0 12px #a855f7; position: relative; background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%); flex-shrink: 0;">
-                        <div style="position: absolute; left: 7px; top: 7px; width: 12px; height: 12px; border: 1.5px dashed #a855f7; border-radius: 50%;"></div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3>Enamel Badge Pins</h3>
-                    <p>Circular structural lapel badges minted clean in micro metal details.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="tag-pill">Custom Lab</span>
-                    <button class="add-cart-btn" onclick="addToCart('Enamel Badge Pins', 'pins')">Add to Cart</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="cart-sidebar" id="cartSidebarPanel">
-        <div class="cart-side-header">
-            <h2>
-                <div class="cart-icon-container" style="transform: scale(1.2);"><div class="cart-basket-mesh" style="border-color:#a855f7"></div><div class="cart-icon-wheel wheel-left" style="background:#a855f7"></div><div class="cart-icon-wheel wheel-right" style="background:#a855f7"></div></div>
-                <span style="margin-left: 10px;">Your Storage Cart</span>
-            </h2>
-            <button class="close-cart" onclick="toggleCart(false)">×</button>
-        </div>
-
-        <div class="cart-items-wrapper" id="cartDrawerList">
-            <div class="empty-cart-msg">Your cart rack is empty.</div>
-        </div>
-
-        <div class="cart-summary-block">
-            <div class="summary-row">
-                <span>Selected Lines</span>
-                <span id="summaryItemsCount">0 types</span>
-            </div>
-            <div class="summary-row">
-                <span>Cargo Shipping</span>
-                <span style="color:#22c55e; font-weight:600;">FREE STUDIO DELIVERY</span>
-            </div>
-            <div class="summary-row total-line">
-                <span>Total Assets</span>
-                <span id="summaryTotalQty" style="text-shadow:0 0 10px rgba(168,85,247,0.5);">0 units</span>
-            </div>
-        </div>
-
-        <button class="cart-checkout-btn" onclick="alert('Order matrix compiled successfully! Routing checkout transmission...')">Proceed to Order</button>
+        <div class="products-grid" id="catalogGrid"></div>
     </div>
 
     <footer>
-        <img src="image/athar logo-10.png" alt="Athar Logo" style="height: 35px; opacity: 0.6; margin-bottom: 10px;">
-        <p style="font-size: 12px; color: #64748b;">© 2026 ATHAR Studio. Beyond Your Best Idea. All rights reserved.</p>
+        <p>&copy; 2026 Athar Studio. All rights reserved.</p>
     </footer>
 
     <script>
-        let shoppingCart = [];
+        // Production Catalog Data Schema - 100 items total (20 items per category)
+        const studioProducts = {
+            stationery: [
+                { id: "stat_01", name: "Laser Engraved Journal", price: 25.00, desc: "Premium dark leather-bound hardcover notebooks lined for clean drafting.", image: "image/products/journal.png", accent: "blue", colors: ["black", "white"] },
+                { id: "stat_02", name: "Architect Sketchbook", price: 32.00, desc: "Heavyweight 180gsm panoramic pages perfect for custom ink layouts.", image: "image/products/sketchbook.png", accent: "blue", colors: ["black", "white"] },
+                { id: "stat_03", name: "Precision Fountain Pen", price: 45.00, desc: "Matte black titanium nib fountain pen engineered for balanced weighted writing.", image: "image/products/fountain-pen.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "stat_04", name: "Calligraphy Ink Well Set", price: 28.00, desc: "Three archival metallic luster pigment inks safely bottled with hardwood storage base.", image: "image/products/ink-set.png", accent: "blue", colors: ["black", "blue"] },
+                { id: "stat_05", name: "Executive Leather Portfolio", price: 85.00, desc: "Hand-stitched full grain hide tailored with integrated secure device slots.", image: "image/products/portfolio.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "stat_06", name: "Minimalist Brass Ruler", price: 18.00, desc: "Solid machined heavy metal alloy rule featuring laser etched imperial measurements.", image: "image/products/brass-ruler.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "stat_07", name: "Mechanical Drafting Pencil", price: 22.00, desc: "Retractable protective tip mechanism constructed with texturized non-slip profile.", image: "image/products/drafting-pencil.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "stat_08", name: "Wax Seal Initial Kit", price: 35.00, desc: "Traditional solid brass sealing stamp shipped alongside organic wax melting components.", image: "image/products/wax-seal.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "stat_09", name: "Premium Graph Pad Set", price: 15.00, desc: "Ghost grid layout configurations bound carefully on micro-perforated backings.", image: "image/products/graph-pad.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "stat_10", name: "Magnetic Desk Tidier Cube", price: 40.00, desc: "Modular geometric organizing array designed to secure stray loose apparatus.", image: "image/products/desk-cube.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "stat_11", name: "Handmade Cotton Stationery", price: 29.00, desc: "Deckled edge artisanal cards tailored exclusively for meaningful long-form letters.", image: "image/products/cotton-stationery.png", accent: "blue", colors: ["purple", "blue"] },
+                { id: "stat_12", name: "Asymmetric Document Tray", price: 54.00, desc: "Sculpted powder coated storage steel engineered to elevate standard desks.", image: "image/products/document-tray.png", accent: "blue", colors: ["purple", "blue"] },
+                { id: "stat_13", name: "Waterproof Field Logbook", price: 19.00, desc: "Synthetic compound page architecture entirely impervious to rain or moisture sheets.", image: "image/products/field-logbook.png", accent: "blue", colors: ["purple", "white"] },
+                { id: "stat_14", name: "Desktop Planner Ledger", price: 38.00, desc: "Chronological grid framing matrix stripped clean of limiting dates or periods.", image: "image/products/planner-ledger.png", accent: "blue", colors: ["purple", "black"] },
+                { id: "stat_15", name: "Geometric Bookend Prisms", price: 62.00, desc: "Heavyweight crystal cast prisms capturing refracting light rays cleanly.", image: "image/products/bookend-prisms.png", accent: "blue", colors: ["purple", "black"] },
+                { id: "stat_16", name: "Archival Storage Binder", price: 48.00, desc: "Reinforced linen bound structural shells meant to house vital design assets safely.", image: "image/products/storage-binder.png", accent: "blue", colors: ["blue", "black"] },
+                { id: "stat_17", name: "Stapleless Paper Fastener", price: 26.00, desc: "Intricate modern mechanical apparatus interlocking pages completely fastener-free.", image: "image/products/paper-fastener.png", accent: "blue", colors: ["blue", "white"] },
+                { id: "stat_18", name: "Erasable Specialized Markers", price: 21.00, desc: "Thermal sensitive pigment blends vanishing clean upon targeted silicone friction applications.", image: "image/products/markers.png", accent: "blue", colors: ["blue", "purple"] },
+                { id: "stat_19", name: "Aluminum Storage Clipboard", price: 34.00, desc: "Hinged interior compartmental vault safeguarding active working field sheets.", image: "image/products/clipboard.png", accent: "blue", colors: ["blue", "black"] },
+                { id: "stat_20", name: "Artisanal Desktop Blotter", price: 70.00, desc: "Ultra smooth felt matrix leveling workspace textures to perfect layout standards.", image: "image/products/desk-blotter.png", accent: "blue", colors: ["blue", "white"] }
+            ],
+            electronics: [
+                { id: "elec_01", name: "Cyber Matrix Mech Keyboard", price: 145.00, desc: "Compact mechanical deck featuring hot-swappable linear switches and RGB.", image: "image/products/mech-keyboard.png", accent: "purple", colors: ["black", "white"] },
+                { id: "elec_02", name: "Ergonomic Vertical Mouse", price: 79.00, desc: "Hand-sculpted wireless control profile minimizing long-term stress points.", image: "image/products/vertical-mouse.png", accent: "purple", colors: ["black", "white"] },
+                { id: "elec_03", name: "ANC Studio Headphones", price: 199.00, desc: "Active hybrid acoustic isolation engines rendering studio precision directly.", image: "image/products/anc-headphones.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "elec_04", name: "Modular Desktop Macro Pad", price: 68.00, desc: "Programmable mechanical inputs streamlining intricate creation pathways.", image: "image/products/macro-pad.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "elec_05", name: "Wireless Induction Charging Pad", price: 42.00, desc: "Multi-device charging terminal concealed beneath smooth composite materials.", image: "image/products/charging-pad.png", accent: "purple", colors: ["white", "purple"] },
+                { id: "elec_06", name: "4K Ambient Screen Glow Bar", price: 55.00, desc: "Monitor mounted dynamic optical assembly fighting optical exhaustion.", image: "image/products/screen-glow.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "elec_07", name: "Aluminum USB-C Command Hub", price: 89.00, desc: "High throughput data architecture enclosed within robust physical shells.", image: "image/products/usb-hub.png", accent: "purple", colors: ["white", "blue"] },
+                { id: "elec_08", name: "Dynamic USB Podcast Microphone", price: 120.00, desc: "Cardioid pickup configuration cutting background atmosphere interference.", image: "image/products/podcast-mic.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "elec_09", name: "MagSafe Desktop Stand", price: 38.00, desc: "Articulated magnetic alloy alignment mounts presenting feeds perfectly.", image: "image/products/magsafe-stand.png", accent: "purple", colors: ["white", "black"] },
+                { id: "elec_10", name: "Smart Desktop LED Matrix", price: 74.00, desc: "Customizable dynamic pixel panels displaying core metrics and telemetry.", image: "image/products/led-matrix.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "elec_11", name: "Hi-Fi Desktop Speaker Pair", price: 240.00, desc: "Compact near-field sound stages driven by composite driver arrays.", image: "image/products/desktop-speakers.png", accent: "purple", colors: ["black", "white"] },
+                { id: "elec_12", name: "Biometric Fingerprint Vault", price: 95.00, desc: "Hardware locked portable storage encrypted against unwanted extractions.", image: "image/products/fingerprint-vault.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "elec_13", name: "Portable Solid State Drive", price: 135.00, desc: "Ultra fast storage frameworks packaged within durable structural frames.", image: "image/products/portable-ssd.png", accent: "purple", colors: ["purple", "blue"] },
+                { id: "elec_14", name: "E-Ink Desktop Memo Board", price: 110.00, desc: "Low friction paper-emulating scheduling terminals saving real workspace sheets.", image: "image/products/eink-memo.png", accent: "purple", colors: ["white", "black"] },
+                { id: "elec_15", name: "Braided Cable Management Core", price: 24.00, desc: "Weighted heavy routing anchor channels keeping terminal lines grouped.", image: "image/products/cable-core.png", accent: "purple", colors: ["purple", "black"] },
+                { id: "elec_16", name: "Ultra-Wide Desk Glow Pad", price: 49.00, desc: "Edge-lit micro woven tracking expanses optimizing control dynamics.", image: "image/products/glow-pad.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "elec_17", name: "HD Desktop Streaming Lens", price: 160.00, desc: "High frame capture arrays complete with integrated localized ring arrays.", image: "image/products/streaming-lens.png", accent: "purple", colors: ["black", "white"] },
+                { id: "elec_18", name: "Smart Air Purification Pod", price: 85.00, desc: "Quiet filter assemblies localized to clean target desktop spaces.", image: "image/products/purification-pod.png", accent: "purple", colors: ["white", "blue"] },
+                { id: "elec_19", name: "Bluetooth Presentation Wand", price: 58.00, desc: "Haptic tactile slide triggers complete with virtual laser highlight tags.", image: "image/products/presentation-wand.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "elec_20", name: "Modular Power Station Bar", price: 115.00, desc: "Surge guarded multi-point distribution arrays for demanding build layouts.", image: "image/products/power-bar.png", accent: "purple", colors: ["black", "white"] }
+            ],
+            toys: [
+                { id: "toys_01", name: "Kinetic Desktop Helix", price: 34.00, desc: "Precision machined tumbling dynamic structures generating optical illusions.", image: "image/products/kinetic-helix.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "toys_02", name: "Carbon Fiber Speed Cube", price: 22.00, desc: "Low resistance structural core built for fluid, friction-free sorting rounds.", image: "image/products/speed-cube.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "toys_03", name: "Cyberpunk Playing Cards", price: 16.00, desc: "Synthetic waterproof decks layered with complex neon vector graphics.", image: "image/products/cyber-cards.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "toys_04", name: "Modular Magnetic Pen Kit", price: 28.00, desc: "Segmented rare-earth structures transforming seamlessly into custom logic puzzles.", image: "image/products/magnetic-pen.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "toys_05", name: "Concrete Gyroscopic Top", price: 40.00, desc: "Perfectly balanced material distributions sustaining extended spin tracking.", image: "image/products/gyro-top.png", accent: "blue", colors: ["black", "white"] },
+                { id: "toys_06", name: "Laser Cut Mechanical Clock", price: 65.00, desc: "Intricate structural wooden sheet arrays interlocking to monitor true cycles.", image: "image/products/mechanical-clock.png", accent: "blue", colors: ["white", "black"] },
+                { id: "toys_07", name: "Micro-Bricks Architecture Studio", price: 78.00, desc: "High density scaling layout components for miniature landscape designs.", image: "image/products/micro-bricks.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "toys_08", name: "Prism Optic Physics Set", price: 45.00, desc: "Flawless glass arrays dividing simple rays into brilliant base colors.", image: "image/products/prism-set.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "toys_09", name: "Retro Handheld Arcade Pod", price: 89.00, desc: "Emulated software core holding historical interactive development builds.", image: "image/products/arcade-pod.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "toys_10", name: "Acoustic Levitation Starter", price: 130.00, desc: "Targeted soundwave matrices holding light particles mid-air reliably.", image: "image/products/levitation-kit.png", accent: "blue", colors: ["black", "blue"] },
+                { id: "toys_11", name: "Programmable Smart Rover", price: 175.00, desc: "Logic tracing sensor blocks introducing advanced routing execution loops.", image: "image/products/smart-rover.png", accent: "blue", colors: ["black", "white"] },
+                { id: "toys_12", name: "Holographic Projection Pyramid", price: 25.00, desc: "Reflective geometric modules shaping targeted screens into mock 3D displays.", image: "image/products/projection-pyramid.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "toys_13", name: "Solar System Motion Orrery", price: 110.00, desc: "Interlocking brass gears driving celestial tracks along factual pathways.", image: "image/products/motion-orrery.png", accent: "blue", colors: ["white", "black"] },
+                { id: "toys_14", name: "Endless Infinity Fidget Block", price: 18.00, desc: "Fluid jointed configurations articulating endlessly across multiple tactile axises.", image: "image/products/infinity-block.png", accent: "blue", colors: ["purple", "black"] },
+                { id: "toys_15", name: "Electronic Chess Command Core", price: 150.00, desc: "Magnetic automation engines responding directly to calculated virtual opponents.", image: "image/products/electronic-chess.png", accent: "blue", colors: ["black", "white"] },
+                { id: "toys_16", name: "Desktop Newton Pendulum", price: 52.00, desc: "Polished steel spheres demonstrating energy preservation actions clean.", image: "image/products/newton-pendulum.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "toys_17", name: "Bioluminescent Dino Pod", price: 60.00, desc: "Living natural organism cultures glowing bright when softly agitated at night.", image: "image/products/bioluminescent-pod.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "toys_18", name: "Magnetic Fluid Display Tube", price: 38.00, desc: "Suspended ferrofluid structures shifting form near tracking magnetic pins.", image: "image/products/ferrofluid-tube.png", accent: "blue", colors: ["black", "blue"] },
+                { id: "toys_19", name: "Modular Drone Build Matrix", price: 125.00, desc: "Snap-together frame parameters detailing lift and velocity equations.", image: "image/products/drone-matrix.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "toys_20", name: "Thermodynamic Stirling Engine", price: 95.00, desc: "External heat capture frames cycling low-friction pistons via hot air shifts.", image: "image/products/stirling-engine.png", accent: "blue", colors: ["white", "black"] }
+            ],
+            gifts: [
+                { id: "gift_01", name: "Levitating Ambient Orb", price: 115.00, desc: "Magnetic float light pods rotating clean without touching base plates.", image: "image/products/levitating-orb.png", accent: "purple", colors: ["white", "purple"] },
+                { id: "gift_02", name: "Custom Engraved Valet Tray", price: 48.00, desc: "Molded heavy leather catchalls managing daily structural pocket carries.", image: "image/products/valet-tray.png", accent: "purple", colors: ["black", "white"] },
+                { id: "gift_03", name: "Storm Weather Predictor Glass", price: 36.00, desc: "Chemical crystal frameworks shifting alignment based on external barometric loads.", image: "image/products/storm-glass.png", accent: "purple", colors: ["white", "blue"] },
+                { id: "gift_04", name: "Machined Steel Key Organizer", price: 29.00, desc: "Rigid minimalist structural bars ending problematic workspace key jingles.", image: "image/products/key-organizer.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "gift_05", name: "Earthy Sandscape Sand Frame", price: 64.00, desc: "Fluid dynamic sand layers forming unique topographic mountain rows every flip.", image: "image/products/sandscape-frame.png", accent: "purple", colors: ["white", "purple"] },
+                { id: "gift_06", name: "Aromatherapy Solid Concrete Burner", price: 42.00, desc: "Brutalist architectural visual styles diffusing clean natural sensory oils.", image: "image/products/concrete-burner.png", accent: "purple", colors: ["black", "white"] },
+                { id: "gift_07", name: "Insulated Smart Sip Flask", price: 55.00, desc: "Thermal core columns keeping system hydration counts ideal for hours.", image: "image/products/smart-flask.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "gift_08", name: "Minimalist RFID Protection Wallet", price: 70.00, desc: "Slim profile aluminum plates guarding vital data pathways tightly.", image: "image/products/rfid-wallet.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "gift_09", name: "Hand-Blown Whiskey Chill Set", price: 85.00, desc: "Geometric glass structures paired alongside dark sculpted chilling rocks.", image: "image/products/whiskey-set.png", accent: "purple", colors: ["white", "black"] },
+                { id: "gift_10", name: "Desktop Terrarium Capsule", price: 50.00, desc: "Sealed life bubbles fostering independent green moss developments.", image: "image/products/terrarium-capsule.png", accent: "purple", colors: ["white", "blue"] },
+                { id: "gift_11", name: "Solid Brass Compass Emblem", price: 75.00, desc: "Classic mechanical navigation instruments etched with custom studio designs.", image: "image/products/brass-compass.png", accent: "purple", colors: ["white", "black"] },
+                { id: "gift_12", name: "Weighted Structural Blanket", price: 140.00, desc: "High density fabric distribution structures reassuring system rest phases.", image: "image/products/weighted-blanket.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "gift_13", name: "Cyber Matrix Enamel Pin Set", price: 24.00, desc: "Collectible visual tokens mapping key studio code milestones.", image: "image/products/pin-set.png", accent: "purple", colors: ["purple", "blue"] },
+                { id: "gift_14", name: "Architectural Desktop Planter", price: 38.00, desc: "Mini modular cast models referencing concrete high-rise design lines.", image: "image/products/concrete-planter.png", accent: "purple", colors: ["white", "black"] },
+                { id: "gift_15", name: "Pure Artisan Wool Scarf", price: 92.00, desc: "Dense element shielding fibers keeping personal core temperatures constant.", image: "image/products/wool-scarf.png", accent: "purple", colors: ["purple", "black"] },
+                { id: "gift_16", name: "Laser Line Engraved Coaster Block", price: 32.00, desc: "Absorbent slate segments protecting main project desks from moisture marks.", image: "image/products/slate-coasters.png", accent: "purple", colors: ["black", "blue"] },
+                { id: "gift_17", name: "Vintage Mechanical Pocket Lens", price: 45.00, desc: "Retractable magnification modules inspecting fine design printing outputs.", image: "image/products/pocket-lens.png", accent: "purple", colors: ["white", "blue"] },
+                { id: "gift_18", name: "Smart Key Proximity Tag", price: 30.00, desc: "Wireless beacon grids broadcasting asset location tracking feedback directly.", image: "image/products/proximity-tag.png", accent: "purple", colors: ["black", "purple"] },
+                { id: "gift_19", name: "Premium Leather Cable Roll", price: 40.00, desc: "Secure tie-down matrices keeping active field wire runs structured.", image: "image/products/cable-roll.png", accent: "purple", colors: ["black", "white"] },
+                { id: "gift_20", name: "Custom Ambient Audio Box", price: 160.00, desc: "Resonant chamber shells running calming acoustic noise files.", image: "image/products/audio-box.png", accent: "purple", colors: ["black", "purple"] }
+            ],
+            customization: [
+                { id: "cust_01", name: "Neon Name Acrylic Sign", price: 125.00, desc: "Vibrant custom bent glow arrays formatting personal name scripts beautifully.", image: "image/products/neon-sign.png", accent: "blue", colors: ["purple", "blue"] },
+                { id: "cust_02", name: "Etched Wood Birthday Plaque", price: 45.00, desc: "Hardwood layout records mapping notable date rotations deeply.", image: "image/products/wood-plaque.png", accent: "blue", colors: ["black", "white"] },
+                { id: "cust_03", name: "Personalized Project Blueprint", price: 60.00, desc: "Technical visual representations of individual milestone moments printed clean.", image: "image/products/custom-blueprint.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "cust_04", name: "Custom Monogram Leather Tag", price: 20.00, desc: "Premium travel identity flags stamped with targeted letter combinations.", image: "image/products/leather-tag.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "cust_05", name: "Engraved Studio Tumbler Cup", price: 38.00, desc: "Double wall containment vessels branded with custom user tags.", image: "image/products/custom-tumbler.png", accent: "blue", colors: ["black", "white"] },
+                { id: "cust_06", name: "Photo Canvas Matrix Block", price: 55.00, desc: "High dynamic prints wrapping clean structural geometric frames.", image: "image/products/canvas-block.png", accent: "blue", colors: ["white", "black"] },
+                { id: "cust_07", name: "Custom Wax Initial Stamp", price: 42.00, desc: "Personal identity matrix markers cast into heavy brass faces.", image: "image/products/custom-stamp.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "cust_08", name: "Engraved Pocket Multi-Tool", price: 48.00, desc: "Hardened steel deployment arrays etched with specific personal identifiers.", image: "image/products/etched-tool.png", accent: "blue", colors: ["black", "blue"] },
+                { id: "cust_09", name: "Custom Star Alignment Map", price: 65.00, desc: "Astrological placement calculations matching specified historic timeline dates.", image: "image/products/star-map.png", accent: "blue", colors: ["white", "black"] },
+                { id: "cust_10", name: "Branded Metal Business Case", price: 32.00, desc: "Sleek card deployment pods carrying sharp custom surface graphics.", image: "image/products/card-case.png", accent: "blue", colors: ["black", "white"] },
+                { id: "cust_11", name: "Custom Vector Portrait Frame", price: 80.00, desc: "Artisanal profile graphics constructed from individual reference pictures.", image: "image/products/vector-frame.png", accent: "blue", colors: ["purple", "blue"] },
+                { id: "cust_12", name: "Etched Metal Flask Core", price: 28.00, desc: "Pocket liquid containment shells customized via high precision laser paths.", image: "image/products/etched-flask.png", accent: "blue", colors: ["black", "white"] },
+                { id: "cust_13", name: "Custom Engraved Wood Desk Box", price: 70.00, desc: "Desktop storage drawers tailored with chosen geometric accent lines.", image: "image/products/desk-box.png", accent: "blue", colors: ["white", "black"] },
+                { id: "cust_14", name: "Personalized Matrix Mousepad", price: 40.00, desc: "Tracking expanses printed with custom digital schema profiles.", image: "image/products/custom-mousepad.png", accent: "blue", colors: ["black", "purple"] },
+                { id: "cust_15", name: "Custom Script Jewelry Vault", price: 95.00, desc: "Polished containment cases complete with specialized monogram accents.", image: "image/products/jewelry-vault.png", accent: "blue", colors: ["white", "purple"] },
+                { id: "cust_16", name: "Laser Etched Crystal Cube", price: 110.00, desc: "Sub-surface point clouds mapping 3D assets inside clean glass blocks.", image: "image/products/crystal-cube.png", accent: "blue", colors: ["white", "blue"] },
+                { id: "cust_17", name: "Custom Soundwave Wave Print", price: 50.00, desc: "Visual audio frequencies rendered directly from shared personal clips.", image: "image/products/soundwave-print.png", accent: "blue", colors: ["white", "black"] },
+                { id: "cust_18", name: "Branded Metal Studio Level", price: 35.00, desc: "Machined building alignment bars carrying specific name engraving tags.", image: "image/products/branded-level.png", accent: "blue", colors: ["black", "blue"] },
+                { id: "cust_19", name: "Custom Name Leather Ledger", price: 62.00, desc: "Binding frameworks embossed with target personal corporate names.", image: "image/products/custom-ledger.png", accent: "blue", colors: ["black", "white"] },
+                { id: "cust_20", name: "Custom Neon Desk Clock Face", price: 145.00, desc: "Time tracking terminals built around personalized aesthetic styles.", image: "image/products/neon-clock.png", accent: "blue", colors: ["purple", "blue"] }
+            ]
+        };
 
-        function toggleCart(openState) {
-            const panel = document.getElementById('cartSidebarPanel');
-            if (openState) panel.classList.add('open');
-            else panel.classList.remove('open');
-        }
+        // Cart State Management Array
+        let activeUserCart = [];
 
-        function addToCart(itemName, iconRef) {
-            const existingItem = shoppingCart.find(i => i.name === itemName);
-            if (existingItem) {
-                existingItem.qty += 1;
-            } else {
-                shoppingCart.push({ name: itemName, type: iconRef, qty: 1 });
-            }
-            updateCartUI();
-            toggleCart(true);
-        }
+        // Dynamic Compilation Engine
+        function buildStudioCatalog() {
+            const gridContainer = document.getElementById("catalogGrid");
+            gridContainer.innerHTML = "";
 
-        function updateCartUI() {
-            const totalUnits = shoppingCart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cartCountGlobal').innerText = totalUnits;
-            document.getElementById('summaryTotalQty').innerText = totalUnits + ' units';
-            document.getElementById('summaryItemsCount').innerText = shoppingCart.length + ' unique design(s)';
+            Object.keys(studioProducts).forEach(categoryKey => {
+                studioProducts[categoryKey].forEach(item => {
+                    const isPurple = item.accent === "purple";
+                    const cardMarkup = `
+                        <div class="product-card ${isPurple ? 'purple-accent' : ''}" data-item-id="${item.id}" data-category="${categoryKey}">
+                            <div class="product-img-box">
+                                <img src="${item.image}" alt="${item.name}" class="product-thumbnail-img" onerror="this.src='image/athar logo-09.png'">
+                            </div>
+                            <div class="product-info">
+                                <h3>${item.name}</h3>
+                                <span class="product-price">$${item.price.toFixed(2)}</span>
+                                <p>${item.desc}</p>
+                                
+                                <div class="product-options-section">
+                                    <div class="option-toggle-group">
+                                        <label class="option-label">
+                                            <input type="radio" name="size_${item.id}" value="Standard" checked> Standard
+                                        </label>
+                                        <label class="option-label">
+                                            <input type="radio" name="size_${item.id}" value="Pro"> Pro Deck
+                                        </label>
+                                    </div>
+                                </div>
 
-            const listContainer = document.getElementById('cartDrawerList');
-            if(shoppingCart.length === 0) {
-                listContainer.innerHTML = '<div class="empty-cart-msg">Your cart rack is empty.</div>';
-                return;
-            }
-
-            listContainer.innerHTML = '';
-            shoppingCart.forEach(item => {
-                let graphicSVG = document.getElementById('thumb-' + item.type).innerHTML;
-
-                listContainer.innerHTML += `
-                    <div class="cart-item-card">
-                        <div class="cart-item-thumb" style="transform: scale(0.8);">
-                            ${graphicSVG}
+                                <div class="product-color-section">
+                                    <div class="color-section-title">Color Parameter</div>
+                                    <div class="color-swatch-group">
+                                        ${item.colors.map((col, idx) => `
+                                            <label class="swatch-label color-${col}">
+                                                <input type="radio" name="color_${item.id}" value="${col}" ${idx === 0 ? 'checked' : ''}>
+                                                <span class="swatch-btn"></span>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-footer">
+                                <span class="tag-pill">${categoryKey}</span>
+                                <button class="add-cart-btn" onclick="pushItemToCart('${categoryKey}', '${item.id}')">Add Asset</button>
+                            </div>
                         </div>
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-qty-badge">QTY: ${item.qty}</div>
-                        </div>
-                        <button class="remove-item-btn" onclick="removeItem('${item.name}')">Remove</button>
-                    </div>
-                `;
+                    `;
+                    gridContainer.innerHTML += cardMarkup;
+                });
             });
         }
 
-        function removeItem(itemName) {
-            shoppingCart = shoppingCart.filter(item => item.name !== itemName);
-            updateCartUI();
-        }
+        // Filtering Execution Node
+        function filterItems(targetCategory) {
+            // UI Button Active Toggle
+            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+            
+            if(targetCategory === 'all') {
+                document.getElementById("btn-all").classList.add("active");
+            } else {
+                document.getElementById(`btn-${targetCategory === 'customization' ? 'customization' : targetCategory}`).classList.add("active");
+            }
 
-        function filterItems(category) {
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'flex';
+            // Cards visibility loop
+            document.querySelectorAll(".product-card").forEach(card => {
+                if(targetCategory === "all" || card.getAttribute("data-category") === targetCategory) {
+                    card.style.display = "flex";
                 } else {
-                    card.style.display = 'none';
+                    card.style.display = "none";
                 }
             });
         }
+
+        // Sidebar Navigation Toggles
+        function toggleNavMenu(openState) {
+            const sidebar = document.getElementById("navSidebarPanel");
+            const dimmer = document.getElementById("sidebarDimmer");
+            if(openState) {
+                sidebar.classList.add("open");
+                dimmer.classList.add("active");
+            } else {
+                sidebar.classList.remove("open");
+                dimmer.classList.remove("active");
+            }
+        }
+
+        function toggleCart(openState) {
+            const sidebar = document.getElementById("cartSidebarPanel");
+            const dimmer = document.getElementById("sidebarDimmer");
+            if(openState) {
+                sidebar.classList.add("open");
+                dimmer.classList.add("active");
+            } else {
+                sidebar.classList.remove("open");
+                dimmer.classList.remove("active");
+            }
+        }
+
+        function closeAllSidebars() {
+            toggleNavMenu(false);
+            toggleCart(false);
+        }
+
+        // Operations Pipeline
+        function pushItemToCart(catKey, itemId) {
+            const sourceItem = studioProducts[catKey].find(p => p.id === itemId);
+            const chosenSize = document.querySelector(`input[name="size_${itemId}"]:checked`).value;
+            const chosenColor = document.querySelector(`input[name="color_${itemId}"]:checked`).value;
+            
+            const uniqueCartId = `${itemId}_${chosenSize}_${chosenColor}`;
+            const existingIndex = activeUserCart.findIndex(i => i.cartUid === uniqueCartId);
+
+            if(existingIndex > -1) {
+                activeUserCart[existingIndex].qty += 1;
+            } else {
+                activeUserCart.push({
+                    cartUid: uniqueCartId,
+                    id: sourceItem.id,
+                    name: sourceItem.name,
+                    price: sourceItem.price,
+                    image: sourceItem.image,
+                    size: chosenSize,
+                    color: chosenColor,
+                    qty: 1
+                });
+            }
+            renderCartDrawer();
+            toggleCart(true);
+        }
+
+        function mutateCartQty(cartUid, mutationDelta) {
+            const targetIndex = activeUserCart.findIndex(i => i.cartUid === cartUid);
+            if(targetIndex > -1) {
+                activeUserCart[targetIndex].qty += mutationDelta;
+                if(activeUserCart[targetIndex].qty <= 0) {
+                    activeUserCart.splice(targetIndex, 1);
+                }
+                renderCartDrawer();
+            }
+        }
+
+        function directlyDropCartItem(cartUid) {
+            activeUserCart = activeUserCart.filter(i => i.cartUid !== cartUid);
+            renderCartDrawer();
+        }
+
+        function renderCartDrawer() {
+            const cartList = document.getElementById("cartDrawerList");
+            const globalCounter = document.getElementById("cartCountGlobal");
+            const totalCounter = document.getElementById("summaryItemsCount");
+            const aggregateValue = document.getElementById("summaryTotalValue");
+
+            if(activeUserCart.length === 0) {
+                cartList.innerHTML = `<div class="empty-cart-msg">Your configuration rack is empty.</div>`;
+                globalCounter.innerText = "0";
+                totalCounter.innerText = "0 items";
+                aggregateValue.innerText = "$0.00";
+                return;
+            }
+
+            cartList.innerHTML = "";
+            let runningTotalSum = 0;
+            let completeUnitsCount = 0;
+
+            activeUserCart.forEach(cartItem => {
+                runningTotalSum += (cartItem.price * cartItem.qty);
+                completeUnitsCount += cartItem.qty;
+
+                cartList.innerHTML += `
+                    <div class="cart-item-card">
+                        <div class="cart-item-thumb">
+                            <img src="${cartItem.image}" alt="${cartItem.name}" onerror="this.src='image/athar logo-09.png'">
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${cartItem.name}</div>
+                            <div class="cart-item-meta">Config: ${cartItem.size} / ${cartItem.color.toUpperCase()}</div>
+                            <div class="cart-item-price">$${(cartItem.price * cartItem.qty).toFixed(2)}</div>
+                            <div class="cart-item-qty-row">
+                                <div class="cart-qty-inline-picker">
+                                    <button class="cart-qty-inline-btn" onclick="mutateCartQty('${cartItem.cartUid}', -1)">-</button>
+                                    <input type="text" class="cart-qty-inline-display" value="${cartItem.qty}" readonly>
+                                    <button class="cart-qty-inline-btn" onclick="mutateCartQty('${cartItem.cartUid}', 1)">+</button>
+                                </div>
+                                <button class="remove-item-btn" onclick="directlyDropCartItem('${cartItem.cartUid}')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            globalCounter.innerText = completeUnitsCount;
+            totalCounter.innerText = `${completeUnitsCount} unit${completeUnitsCount > 1 ? 's' : ''}`;
+            aggregateValue.innerText = `$${runningTotalSum.toFixed(2)}`;
+        }
+
+        // Initialize Workspace Catalog on DOM Load
+        window.addEventListener("DOMContentLoaded", () => {
+            buildStudioCatalog();
+        });
     </script>
 </body>
 </html>
